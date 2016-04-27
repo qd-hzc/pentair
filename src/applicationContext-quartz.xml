@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd"
+	default-lazy-init="true">
+
+	<description>Quartz的本地Cron式执行任务配置</description>
+
+	<!-- Quartz本地Schduler -->
+	<bean id="localQuartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" lazy-init="false">
+		<!-- Triggers集成 -->
+		<property name="triggers">
+			<list>
+				<ref bean="rfqCloseJobTrigger" />
+				<ref bean="dBBackupJobTrigger" />
+				<ref bean="restartServerTrigger" />
+			</list>
+		</property>
+		<!-- Quartz配置 -->
+		<property name="quartzProperties">
+			<props>
+				<prop key="org.quartz.threadPool.threadCount">5</prop>
+			</props>
+		</property>
+		<!-- 启动时延期3秒开始任务 -->
+		<property name="startupDelay" value="3" />
+	</bean>
+
+	<!-- 每天零点自动检查到期RFQ记录并关闭 -->
+	<bean id="rfqCloseJob" class="com.pentair.showcase.schedule.RfqCloseJob" />	
+	<bean id="rfqCloseJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="rfqCloseJob" />
+		<property name="targetMethod" value="execute" />
+		<!-- 同一任务在前一次执行未完成而Trigger时间又到时是否并发开始新的执行, 默认为true. -->
+		<property name="concurrent" value="true" />
+	</bean>
+	<bean id="rfqCloseJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="rfqCloseJobDetail" />
+		<!-- 执行一次 -->
+		<property name="cronExpression" value="0 0 0 * * ?" />
+	</bean>
+	
+	<!-- 每天零点三十分自动备份MySQL数据库 -->
+	<bean id="dBBackupJob" class="com.pentair.showcase.schedule.DBBackupJob">
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="database" value="${jdbc.database}" />
+		<property name="savePath" value="${backup.db_path}" />
+		<property name="execPath" value="${backup.exec_path}" />
+	</bean>
+	<bean id="dBBackupJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="dBBackupJob" />
+		<property name="targetMethod" value="execute" />
+		<!-- 同一任务在前一次执行未完成而Trigger时间又到时是否并发开始新的执行, 默认为true. -->
+		<property name="concurrent" value="true" />
+	</bean>
+	<bean id="dBBackupJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="dBBackupJobDetail" />
+		<!-- 每天零点执行一次 -->
+		<property name="cronExpression" value="0 30 0 * * ?" />
+	</bean>
+	
+	<!-- 每天凌成1点自动重启一下server -->
+	<bean id="restartServerJob" class="com.pentair.utils.ServerRestart">
+		<property name="restartCommandPath" value="D:/RFQServer/rfq/restart.bat" />
+	</bean>
+	<bean id="restartServerDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="restartServerJob" />
+		<property name="targetMethod" value="restart" />
+		<!-- 同一任务在前一次执行未完成而Trigger时间又到时是否并发开始新的执行, 默认为true. -->
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="restartServerTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="restartServerDetail" />
+		<!-- 每天零点执行一次 -->
+		<property name="cronExpression" value="0 0 1 * * ?" />
+	</bean>
+	
+</beans>

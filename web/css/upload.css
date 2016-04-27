@@ -1,0 +1,619 @@
+@charset "utf-8";
+
+.blank0 {
+	CLEAR: both; FONT-SIZE: 0px; OVERFLOW: hidden; HEIGHT: 0px
+}
+.blank1 {
+	CLEAR: both; FONT-SIZE: 1px; OVERFLOW: hidden; HEIGHT: 1px
+}
+.blank2 {
+	CLEAR: both; FONT-SIZE: 1px; OVERFLOW: hidden; HEIGHT: 2px
+}
+.blank3 {
+	CLEAR: both; FONT-SIZE: 1px; OVERFLOW: hidden; HEIGHT: 3px
+}
+.blank4 {
+	CLEAR: both; FONT-SIZE: 1px; OVERFLOW: hidden; HEIGHT: 4px
+}
+.blank6 {
+	CLEAR: both; FONT-SIZE: 1px; OVERFLOW: hidden; HEIGHT: 6px
+}
+.blank9 {
+	CLEAR: both; FONT-SIZE: 1px; OVERFLOW: hidden; HEIGHT: 9px
+}
+.blank12 {
+	CLEAR: both; FONT-SIZE: 1px; OVERFLOW: hidden; HEIGHT: 12px
+}
+.blank15 {
+	CLEAR: both; FONT-SIZE: 1px; OVERFLOW: hidden; HEIGHT: 15px
+}
+.blank18 {
+	CLEAR: both; FONT-SIZE: 1px; OVERFLOW: hidden; HEIGHT: 18px
+}
+.blank21 {
+	CLEAR: both; FONT-SIZE: 1px; OVERFLOW: hidden; HEIGHT: 21px
+}
+.blank24 {
+	CLEAR: both; FONT-SIZE: 1px; OVERFLOW: hidden; HEIGHT: 24px
+}
+
+.fB {
+	FONT-WEIGHT: bold
+}
+.fI {
+	FONT-STYLE: italic
+}
+.f12px {
+	FONT-SIZE: 12px
+}
+.f14px {
+	FONT-SIZE: 14px
+}
+.f16px {
+	FONT-SIZE: 16px
+}
+.f24px {
+	FONT-SIZE: 24px
+}
+/* ============常用============ */
+.left {float:left;}
+.right {float:right;}
+.clear {clear:both;}
+.block {display:block;}
+.inline{display:inline;}
+.none {display:none;}
+
+.table-left{
+	text-align:left;}
+.table-center{
+	text-align:center;}
+.table-right{
+	text-align:right;}
+
+.red {color:#ca0000;}
+.blue {color:#319EEF;}
+.green {color:#090;}
+.strong {font-weight:600;}
+
+
+body,td,p,li,select,input,div,table,ul,li,h1,h2,h3{
+	font-size:12px; 
+	font-family:Arial, Helvetica,"宋体",
+}
+
+
+/* =1 btn
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+.btn {
+	BORDER-RIGHT: #7b9ebd 1px solid;
+	PADDING-RIGHT: 2px;
+	BORDER-TOP: #7b9ebd 1px solid;
+	PADDING-LEFT: 2px;
+FILTER: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#cecfde); 
+BORDER-LEFT: #7b9ebd 1px solid;
+	CURSOR: hand;
+	COLOR: black;
+	PADDING-TOP: 2px;
+	BORDER-BOTTOM: #7b9ebd 1px solid;
+	text-align: center;
+}
+.kong{
+	background-image:url(img/kong.gif);
+	background-repeat:no-repeat;
+	width:20px;
+	height:23px;}
+	
+
+a.btn-bar{float:left;padding:0px 0px 0px 12px; display:block;background:url("/img/btn1-left.jpg") no-repeat left center;cursor:pointer;text-decoration:none;}
+a.btn-bar span{float:left;display:block;height:23px;
+line-height:23px;padding:0px 12px 0px 0px;
+background:url("/img/btn1-right.jpg") no-repeat right center;cursor:pointer;text-decoration:none;color:#0C568D;}
+
+a.btn-bar:hover{float:left;padding:0px 0px 0px 12px; display:block;background:url("/img/btn1-left.jpg") no-repeat left top;cursor:pointer;text-decoration:none;}
+a.btn-bar:hover span{float:left;display:block;height:23px;padding:0px 12px 0px 0px;background:url("/img/btn1-right.jpg") no-repeat right top;cursor:pointer;text-decoration:none;}
+	
+.btn-center{position:relative;width:100%;left:50%;margin-left:-50px;}
+
+/* =1 form
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+.input-none {
+	BORDER-RIGHT: #A3CEEF 0px solid; BORDER-TOP: #A3CEEF 0px solid; BORDER-LEFT: #A3CEEF 0px solid; COLOR: #000000; BORDER-BOTTOM: #A3CEEF 0px solid;
+}
+.input-def {
+	BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; COLOR: #000000; BORDER-BOTTOM: #cccccc 1px solid; BACKGROUND-COLOR: #ECF6FC;background-image:url(/img/input_bg.png);background-repeat:repeat-x;
+}
+.input1 {
+height:1.8em;
+width:500px; 
+border:1px solid #4C9DC5;background-color:#ffffff;
+}
+.radio{}
+.select{
+	BORDER-RIGHT: #163E97 1px solid; BORDER-TOP: #163E97 1px solid; BORDER-LEFT: #163E97 1px solid; COLOR: #000000; BORDER-BOTTOM: #163E97 1px solid; BACKGROUND-COLOR: #E8F1FD
+}
+
+.textarea {
+  height:1.6em;
+  width:500px;  
+  COLOR: balck;
+  BORDER: #4C9DC5 1px solid; 
+  BACKGROUND-COLOR: #FFFFCC;
+  overflow:visible;
+}
+
+.textarea1 {
+  height:1.6em;
+  width:500px;  
+  COLOR: balck;
+  BORDER: #4C9DC5 1px solid; 
+  BACKGROUND-COLOR: #ffffff;
+  overflow:visible;
+}
+
+
+
+/* =3 消息
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+.send-massage-title{
+background:url(/img/send-bg.gif) no-repeat left center;
+                width:68px;
+                height:24px;
+                float:left;
+                padding:2px 0px;
+                line-height:24px;
+}
+
+.send-massage-title span{
+padding-left: 10px;}
+
+.send-massage-input1{
+                padding:4px 0px 4px 0px;
+                line-height:24px;
+}
+
+
+.send-massage {
+	border-top: 1px solid #C0DBF8;
+	border-right: 1px solid #C0DBF8;
+	border-collapse: collapse;
+}
+/*显示表格的左边和下边的线段和table样式开始*/
+
+.send-massage tr td {/*默认情况下行的显示*/
+	color: #016397;
+	padding:10px 10px;
+	border-bottom: 1px solid #C0DBF8;
+	border-left: 1px solid #C0DBF8;
+	background-image:url(/img/tab_title_td02.gif);
+	background-repeat:repeat-x;
+}
+
+
+.send-massage th {
+	text-align:center;
+	color: #016397;
+	height:30px;
+	line-height:30px;
+	background-image:url(/img/tab_title_th01.gif);
+	background-repeat:repeat-x;
+	cursor:default;
+	font-weight:bold;
+	border-bottom: 1px solid #C0DBF8;
+	border-left: 1px solid #C0DBF8;
+}
+
+.send-massage A:link{
+ COLOR:#163E97; TEXT-DECORATION: none;}
+.send-massage A:visited{
+ COLOR: #163E97; TEXT-DECORATION: none;}
+.send-massage A:hover {
+ color:#A4BBF2;text-decoration:none;}
+.send-massage A:active {
+ COLOR: #163E97; TEXT-DECORATION: none;}
+
+
+
+/* =3 login
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+.content{width:930px;height:540px;/*margin:auto;*/position:absolute;left:50%;top:50%;margin:-285px 0 0 -440px;}
+
+.logo{float:left;margin-bottom:-32px;position:relative;top:32px;left:30px;}
+.logo h1{width:314px;height:43px;background-image:url(/img/login/logo.jpg);background-repeat:no-repeat;}
+.intro-bg{background:url(/img/login/bg1.jpg) no-repeat;width:489px;height:540px;}
+.intro-title{padding-left:40px;padding-top:380px;line-height:30px;color:#848484;}
+.loginname{width:257px;height:66px;background-image:url(/img/login/login-title.jpg);background-repeat:no-repeat;padding-bottom:20px;}
+.text{border:1px solid #666666;color:#333;}
+.reg{margin-top:25px;padding-top:25px;border-top:1px solid #e0e0e0;width:235px;margin-left:51px;}
+.reg a,.reg span{color:#999;}
+.footer{position:absolute;left:0;bottom:0;/* ie8 bug */width:100%;}
+.copyright{height:38px;line-height:38px;background:#f3f3f3;text-align:center;}
+.copyright,.copyright a{color:#9C9C9C;text-decoration:none;}
+.copyright a,.copyright span{margin:0 5px;}
+.copyright a:hover{text-decoration:underline;}
+
+/* =4 padding
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+.padding10{
+	padding:10px;}
+.padding6{
+	padding:6px;}
+.padding6-14{
+	padding:6px 14px;}
+	
+.padding0-10{
+	padding:0px 10px;}
+	
+.padding0-4{
+	padding:0px 4px;}
+.margin-top-6{margin-top:0px;margin-top:0px!important;*margin-top:-6px;}/*解决IE6高6个像素问题*/
+/* =5 第一个table样式{主内容中,样式为蓝色}
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/	
+
+.table01 {
+	border-top: 1px solid #AACDF9;
+	border-right: 1px solid #AACDF9;
+	border-collapse: collapse;
+}
+/*显示表格的左边和下边的线段和table样式开始*/
+
+.table01 tr td {/*默认情况下行的显示*/
+	padding:2px;
+	border-bottom: 1px solid #AACDF9;
+	border-left: 1px solid #AACDF9;
+}
+.table01 tr.alt {
+	 background:#F8FCFE; /*交替行颜色定义*/
+}
+.table01 tr.over {
+	background:#F4FAFF;
+	cursor:hand;/*当前行颜色*/
+}
+.table01 th {
+	text-align:center;
+	padding:2px 10px;
+    font-weight:bold;
+	color: #144B74;
+	height:26px;
+	line-height:26px;
+	background-color:#E6F5FF;
+	border-bottom: 1px solid #AACDF9;
+	border-left: 1px solid #AACDF9;
+	cursor:default;
+}
+.table01 tfoot td{
+	padding-top:4px;
+	height:26px;
+	text-align:center;}
+/*显示表格的左边和下边的线段和table样式结束*/
+.table01 A:link{
+ COLOR:#163E97; TEXT-DECORATION: none;}
+.table01 A:visited{
+ COLOR: #163E97; TEXT-DECORATION: none;}
+.table01 A:hover {
+ color:#A4BBF2;text-decoration:underline;}
+.table01 A:active {
+ COLOR: #163E97; TEXT-DECORATION: none;}
+ 
+ 
+ /* =6 第二个table样式{主内容中,样式为透明}
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/	
+
+.table02 {
+}
+/*显示表格的左边和下边的线段和table样式开始*/
+
+.table02 tr td {/*默认情况下行的显示*/
+	color: #000000;
+	padding:3px;
+}
+.table02 tr td.left{
+	text-align:left;}
+	
+.table02 tr td.center{
+	text-align:center}
+	
+.table02 tr td.right{
+	text-align:right}
+	
+.table02 tr.alt {
+	 background:#F8FCFE; /*交替行颜色定义*/
+}
+.table02 tr.over {
+	background:#F4FAFF;
+	cursor:hand;/*当前行颜色*/
+}
+.table02 th {
+	text-align:center;
+	padding:2px 10px;
+    font-weight:bold;
+	color: #144B74;
+	height:26px;
+	line-height:26px;
+	cursor:default;
+}
+.table02 tfoot td{
+	padding-top:4px;
+	height:26px;
+	text-align:center;}
+/*显示表格的左边和下边的线段和table样式结束*/
+.table02 A:link{
+ COLOR:#163E97;font-weight:normal; TEXT-DECORATION: none;}
+.table02 A:visited{
+ COLOR: #163E97;font-weight:normal; TEXT-DECORATION: none;}
+.table02 A:hover {
+ color:#A4BBF2;font-weight:normal; TEXT-DECORATION: none;}
+.table02 A:active {
+ COLOR: #163E97;font-weight:normal; TEXT-DECORATION: none;}
+ 
+ 
+ 
+  /* =7 第三个table样式{主内容中,样式为透明}
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/	
+
+.table03 {
+	border-top: 1px solid #C0DBF8;
+	border-right: 1px solid #C0DBF8;
+	border-collapse: collapse;
+}
+/*显示表格的左边和下边的线段和table样式开始*/
+
+.table03 tr td {/*默认情况下行的显示*/
+	color: #016397;
+	height:26px;
+	line-height:26px;
+	text-align:center;
+	border-bottom: 1px solid #C0DBF8;
+	border-left: 1px solid #C0DBF8;
+}
+.table03 tr.alt {
+	 background:#E7F4FD; /*交替行颜色定义*/
+}
+.table03 tr.over {
+	background:#FEF5CC;
+	cursor:hand;/*当前行颜色*/
+}
+.table03 th {
+	text-align:center;
+	color: #000000;
+	height:30px;
+	line-height:30px;
+	background-image:url(/img/tab_title_head.jpg);
+	background-repeat:repeat-x;
+	cursor:default;
+	border-bottom: 1px solid #C0DBF8;
+	border-left: 1px solid #C0DBF8;
+}
+.tfoot td{
+	font-weight:bold;
+	height:24px;
+	color:#555;
+	text-align:right;
+	padding-right:10px;
+	padding-top:6px;}
+.tfoot a:link{COLOR:#555; TEXT-DECORATION: none;}
+.tfoot a:visited{COLOR:#555; TEXT-DECORATION: none;}
+.tfoot a:hover{COLOR:#163E97; TEXT-DECORATION:underline;}
+.tfoot a:active{COLOR:#555; TEXT-DECORATION: none;}
+/*显示表格的左边和下边的线段和table样式结束*/
+.table03 A:link{
+ COLOR:#163E97; TEXT-DECORATION: none;}
+.table03 A:visited{
+ COLOR: #163E97; TEXT-DECORATION: none;}
+.table03 A:hover {
+ color:#A4BBF2;text-decoration:underline;}
+.table03 A:active {
+ COLOR: #163E97; TEXT-DECORATION: none;}
+/*显示表格的左边和下边的线段和table样式结束*/
+.table03 A:link{
+ COLOR:#163E97; TEXT-DECORATION: none;}
+.table03 A:visited{
+ COLOR: #163E97; TEXT-DECORATION: none;}
+.table03 A:hover {
+ color:#A4BBF2;text-decoration:underline;}
+.table03 A:active {
+ COLOR: #163E97; TEXT-DECORATION: none;}
+
+/* =8 第四个table样式{对应栏目添加}
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+.table04 th {
+	text-align:center;
+	color: #000000;
+	height:34px;
+	line-height:34px;
+	background-image:url(/img/tab_title_head1.jpg);
+	background-repeat:repeat-x;
+	cursor:default;
+}
+.table04 {
+
+	border-collapse: collapse;
+}
+/*显示表格的左边和下边的线段和table样式开始*/
+
+.table04 tr td {/*默认情况下行的显示*/
+	color: #016397;
+	height:20px;
+	line-height:20px;
+	border-left: 1px solid #C0DBF8;
+	border-right: 1px solid #C0DBF8;
+}
+.table04 tr.alt {
+	 background:#E7F4FD; /*交替行颜色定义*/
+}
+.table04 tr.over {
+	background:#FEF5CC;
+	cursor:hand;/*当前行颜色*/
+}
+
+.table04 A:link{
+ COLOR:#163E97; TEXT-DECORATION: none;}
+.table04 A:visited{
+ COLOR: #163E97; TEXT-DECORATION: none;}
+.table04 A:hover {
+ color:#A4BBF2;text-decoration:underline;}
+.table04 A:active {
+ COLOR: #163E97; TEXT-DECORATION: none;}
+
+
+.table04 th {
+	text-align:center;
+	color: #000000;
+	height:34px;
+	line-height:34px;
+	background-image:url(/img/tab_title_head1.jpg);
+	background-repeat:repeat-x;
+	cursor:default;
+}
+.table04 {
+
+	border-collapse: collapse;
+}
+/*显示表格的左边和下边的线段和table样式开始*/
+
+
+
+/* =8.1 表头样式
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+.table05 {
+	border-top: 1px solid #C0DBF8;
+	border-right: 1px solid #C0DBF8;
+	border-left:1px solid #c0dbf8;
+	border-collapse: collapse;
+}
+.table05 tr td {/*默认情况下行的显示*/
+	color: #016397;
+	height:18px;
+	line-height:26px;
+	border-bottom: 1px dotted #C0DBF8;
+	border-left: 1px solid #C0DBF8;
+}
+.table05 th{
+	text-align:center;
+	color: #000000;
+	height:34px;
+	line-height:34px;
+	background-image:url(/img/tab_title_head1.jpg);
+	background-repeat:repeat-x;
+	cursor:default;
+}
+.table05 tr.alt {
+	 background:#E7F4FD; /*交替行颜色定义*/
+}
+.table05 tr.over {
+	background:#FEF5CC;
+	cursor:hand;/*当前行颜色*/
+}
+.table05 A:link{
+ COLOR:#163E97; TEXT-DECORATION: none;}
+.table05 A:visited{
+ COLOR: #163E97; TEXT-DECORATION: none;}
+.table05 A:hover {
+ color:#A4BBF2;text-decoration:underline;}
+.table05 A:active {
+ COLOR: #163E97; TEXT-DECORATION: none;}
+
+
+
+  /* =8.2 table样式
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/	
+
+.table06 {
+	border-top: 1px solid #C0DBF8;
+	border-right: 1px solid #C0DBF8;
+	border-collapse: collapse;
+}
+/*显示表格的左边和下边的线段和table样式开始*/
+
+.table06 tr td {/*默认情况下行的显示*/
+	color: #016397;
+	padding:4px 10px;
+	border-bottom: 1px solid #C0DBF8;
+	border-left: 1px solid #C0DBF8;
+	background-image:url(/img/tab_title_td02.gif);
+	background-repeat:repeat-x;
+}
+
+.table06 tr td.color {/*默认情况下行的显示*/
+	color: #016397;
+	padding:4px 10px;
+	border-bottom: 1px solid #C0DBF8;
+	border-left: 1px solid #C0DBF8;
+	background-image:url(/img/tab_title_td01.gif);
+	background-repeat:repeat-x;
+}
+
+
+.table06 tr.alt {
+	 background:#E7F4FD; /*交替行颜色定义*/
+}
+.table06 tr.over {
+	background:#FEF5CC;
+	cursor:hand;/*当前行颜色*/
+}
+.table06 th {
+	text-align:center;
+	color: #016397;
+	height:30px;
+	line-height:30px;
+	background-image:url(/img/tab_title_th01.gif);
+	background-repeat:repeat-x;
+	cursor:default;
+	font-weight:bold;
+	border-bottom: 1px solid #C0DBF8;
+	border-left: 1px solid #C0DBF8;
+}
+
+/*显示表格的左边和下边的线段和table样式结束*/
+.table06 A:link{
+ COLOR:#163E97; TEXT-DECORATION: none;}
+.table06 A:visited{
+ COLOR: #163E97; TEXT-DECORATION: none;}
+.table06 A:hover {
+ color:#A4BBF2;text-decoration:none;}
+.table06 A:active {
+ COLOR: #163E97; TEXT-DECORATION: none;}
+
+
+/* =8 附件
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+.fujian {
+	padding:0px;font-weight: normal;}
+
+.fujian ul{}
+.fujian ul li{list-style:none;padding-left:4px;float:left;}
+
+.fujian .ico-1{
+	margin-top:2px;
+	padding-right:2px;background-image:url(/img/fujian.gif);
+background-repeat:no-repeat;width:15px;height:15px;}
+.fujian .ico-2{
+	margin-top:2px;background:url(/img/delete.gif) no-repeat left top;
+background-repeat:no-repeat;width:15px;height:15px;}
+.fujian A:link{
+ COLOR:#000; TEXT-DECORATION: none;}
+.fujian A:visited{
+ COLOR: #000; TEXT-DECORATION: none;}
+.fujian A:hover {
+ color:#000;text-decoration:underline;}
+.fujian A:active {
+ COLOR: #000; TEXT-DECORATION: none;}
+
+
+
+
+/* =9 进度条
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+.Progress-Bar-bg{
+	background-image:url(/img/Progress-Bar-bg.jpg);
+	background-repeat:no-repeat;
+    }
+.Progress-bar-color{
+	background-image:url(/img/Progress-Bar-color.jpg);
+	background-repeat:no-repeat;
+	}
+
+
+/* =8 Extra
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+/* =9 Footer
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/

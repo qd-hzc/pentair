@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Server>
+	<Service name="Catalina">
+		<Connector port="8080" URIEncoding="UTF-8" connectionTimeout="3000" acceptCount="100" maxThreads="200" minSpareThreads="50" maxSpareThreads="100" enableLookups ="false" compression="on" compressionMinSize="2048"  noCompressionUserAgents="gozilla, traviata" compressableMimeType="text/html,text/xml,text/javascript,text/css,text/plain" />
+		<Engine name="Catalina" defaultHost="localhost">
+			<Host name="localhost" appBase="webapps" autoDeploy="false" deployXML="false" unpackWARs="false">
+				<Context path="" docBase="E:\Projects\pentair\rfq\web" reloadable="true">
+
+				</Context>
+			</Host>
+		</Engine>
+	</Service>
+</Server>
+  
