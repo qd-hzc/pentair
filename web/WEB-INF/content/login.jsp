@@ -1,7 +1,11 @@
-﻿<%@ page contentType="text/html; charset=UTF-8" %>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/common/taglibs.jsp" %>
 <%@ page import="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter" %>
+<%@ page import="com.pentair.utils.tld.SessionTld" %>
+<%@ taglib prefix="fmt" uri="http://thankful.site/language" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title><s:text name="security.login"/> - <s:text name="website.title"/></title>
@@ -50,13 +54,41 @@
         }
     </style>
 </head>
+<%
+    String contextPath = request.getContextPath();
 
+    Object language = request.getParameter("language");
+    String langStr = "china";
+    if (null != language) {
+        langStr = (String) language;
+    }
+    request.getSession().setAttribute("language", langStr);
+    SessionTld.setSession(request.getSession());
+%>
 <body onload="javascript:loginForm.j_username.focus();">
 <br>
 <br>
 <br>
 <br>
 
+<fmt:language key="login.login"/>
+<div style="height: 40px;">
+    语言/Language：
+    <select id="language">
+        <option value="china">中文</option>
+        <option value="english">English</option>
+    </select>
+</div>
+<script>
+    $(function () {
+        var contextPath = '<%=contextPath%>';
+        var language = '<%=langStr%>';
+        $('#language').val(language).change(function () {
+            var lang = $('#language').val();
+            window.location.href = contextPath + '/login.jsp?language=' + lang;
+        });
+    })
+</script>
 <div align="center">
     <form name="loginForm" method="post" action="${ctx}/j_spring_security_check"
           onsubmit="javascript:return checkForm(this);">
