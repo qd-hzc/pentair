@@ -1,8 +1,8 @@
 /**
  * Copyright (c) 2005-2010 springside.org.cn
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
- * 
+ * <p>
  * $Id: JmemcachedServer.java 1222 2010-09-14 16:44:57Z calvinxiu $
  */
 package org.springside.modules.memcached;
@@ -22,55 +22,55 @@ import com.thimbleware.jmemcached.storage.hash.LRUCacheStorageDelegate;
 /**
  * JMemcached的封装, 主要用于功能测试.
  * 注意JMemcached对二进制协议支持不好, 尽量使用文本协议.
- * 
+ *
  * @author calvin
  */
 public class JmemcachedServer {
 
-	private static Logger logger = LoggerFactory.getLogger(JmemcachedServer.class);
+    private static Logger logger = LoggerFactory.getLogger(JmemcachedServer.class);
 
-	private MemCacheDaemon jmemcached;
+    private MemCacheDaemon jmemcached;
 
-	private String serverUrl = "localhost:11211";
+    private String serverUrl = "localhost:11211";
 
-	private int maxItems = 1024;
-	private long maxBytes = 1024 * 2048;
-	private long ceilingSize = 2048;
+    private int maxItems = 1024;
+    private long maxBytes = 1024 * 2048;
+    private long ceilingSize = 2048;
 
-	@PostConstruct
-	public void start() throws Exception {
+    @PostConstruct
+    public void start() throws Exception {
 
-		logger.info("Initializing JMemcached Daemon");
+        logger.info("Initializing JMemcached Daemon");
 
-		LRUCacheStorageDelegate cacheStorage = new LRUCacheStorageDelegate(maxItems, maxBytes, ceilingSize);
+        LRUCacheStorageDelegate cacheStorage = new LRUCacheStorageDelegate(maxItems, maxBytes, ceilingSize);
 
-		jmemcached = new MemCacheDaemon();
-		jmemcached.setCache(new Cache(cacheStorage));
-		jmemcached.setAddr(AddrUtil.getAddresses(serverUrl).get(0));
-		jmemcached.setBinary(false);
-		jmemcached.start();
-		logger.info("Initialized JMemcached Daemon");
-	}
+        jmemcached = new MemCacheDaemon();
+        jmemcached.setCache(new Cache(cacheStorage));
+        jmemcached.setAddr(AddrUtil.getAddresses(serverUrl).get(0));
+        jmemcached.setBinary(false);
+        jmemcached.start();
+        logger.info("Initialized JMemcached Daemon");
+    }
 
-	@PreDestroy
-	public void stop() throws Exception {
-		logger.info("Shutting down Jmemcached Daemon");
-		jmemcached.stop();
-	}
+    @PreDestroy
+    public void stop() throws Exception {
+        logger.info("Shutting down Jmemcached Daemon");
+        jmemcached.stop();
+    }
 
-	public void setServerUrl(String serverUrl) {
-		this.serverUrl = serverUrl;
-	}
+    public void setServerUrl(String serverUrl) {
+        this.serverUrl = serverUrl;
+    }
 
-	public void setMaxItems(int maxItems) {
-		this.maxItems = maxItems;
-	}
+    public void setMaxItems(int maxItems) {
+        this.maxItems = maxItems;
+    }
 
-	public void setMaxBytes(long maxBytes) {
-		this.maxBytes = maxBytes;
-	}
+    public void setMaxBytes(long maxBytes) {
+        this.maxBytes = maxBytes;
+    }
 
-	public void setCeilingSize(long ceilingSize) {
-		this.ceilingSize = ceilingSize;
-	}
+    public void setCeilingSize(long ceilingSize) {
+        this.ceilingSize = ceilingSize;
+    }
 }

@@ -18,45 +18,44 @@ import com.pentair.showcase.ws.server.result.WSResult;
 
 /**
  * SmallImageWebService服务端实现类.
- * 
+ * <p>
  * 客户端实现见功能测试用例.
- * 
- * @see SmallImageWebService
- * 
+ *
  * @author calvin
+ * @see SmallImageWebService
  */
 @WebService(serviceName = "SmallImageService", portName = "SmallImageServicePort", endpointInterface = "com.pentair.showcase.ws.server.SmallImageWebService", targetNamespace = WsConstants.NS)
 public class SmallImageWebServiceImpl implements SmallImageWebService, ApplicationContextAware {
 
-	private static Logger logger = LoggerFactory.getLogger(SmallImageWebServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(SmallImageWebServiceImpl.class);
 
-	private ApplicationContext applicationContext;
+    private ApplicationContext applicationContext;
 
-	/**
-	 * @see SmallImageWebService#getImage()
-	 */
-	public SmallImageResult getImage() {
+    /**
+     * @see SmallImageWebService#getImage()
+     */
+    public SmallImageResult getImage() {
 
-		InputStream is = null;
-		try {
-			//采用applicationContext的getResource()函数获取Web应用中的文件.
-			is = applicationContext.getResource("/img/logo.jpg").getInputStream();
-			//读取内容到字节数组.
-			byte[] imageBytes = IOUtils.toByteArray(is);
+        InputStream is = null;
+        try {
+            //采用applicationContext的getResource()函数获取Web应用中的文件.
+            is = applicationContext.getResource("/img/logo.jpg").getInputStream();
+            //读取内容到字节数组.
+            byte[] imageBytes = IOUtils.toByteArray(is);
 
-			SmallImageResult result = new SmallImageResult();
-			result.setImageData(imageBytes);
-			return result;
-		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
-			return WSResult.buildResult(SmallImageResult.class, WSResult.IMAGE_ERROR, "Image reading error.");
-		} finally {
-			IOUtils.closeQuietly(is);
-		}
+            SmallImageResult result = new SmallImageResult();
+            result.setImageData(imageBytes);
+            return result;
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+            return WSResult.buildResult(SmallImageResult.class, WSResult.IMAGE_ERROR, "Image reading error.");
+        } finally {
+            IOUtils.closeQuietly(is);
+        }
 
-	}
+    }
 
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-	}
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 }

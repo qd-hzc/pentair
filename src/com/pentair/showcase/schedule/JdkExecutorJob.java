@@ -22,69 +22,69 @@ import org.springside.modules.utils.ThreadUtils.CustomizableThreadFactory;
  */
 public class JdkExecutorJob implements Runnable {
 
-	private static Logger logger = LoggerFactory.getLogger(JdkExecutorJob.class);
+    private static Logger logger = LoggerFactory.getLogger(JdkExecutorJob.class);
 
-	private int initialDelay = 0;
+    private int initialDelay = 0;
 
-	private int period = 0;
+    private int period = 0;
 
-	private int shutdownTimeout = Integer.MAX_VALUE;
+    private int shutdownTimeout = Integer.MAX_VALUE;
 
-	private ScheduledExecutorService scheduledExecutorService;
+    private ScheduledExecutorService scheduledExecutorService;
 
-	private AccountManager accountManager;
+    private AccountManager accountManager;
 
-	@PostConstruct
-	public void start() throws Exception {
-		Assert.isTrue(period > 0);
+    @PostConstruct
+    public void start() throws Exception {
+        Assert.isTrue(period > 0);
 
-		//任何异常不会中断schedule执行
-		Runnable task = new DelegatingErrorHandlingRunnable(this, TaskUtils.LOG_AND_SUPPRESS_ERROR_HANDLER);
+        //任何异常不会中断schedule执行
+        Runnable task = new DelegatingErrorHandlingRunnable(this, TaskUtils.LOG_AND_SUPPRESS_ERROR_HANDLER);
 
-		scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new CustomizableThreadFactory(
-				"JdkExecutorJob"));
+        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new CustomizableThreadFactory(
+                "JdkExecutorJob"));
 
-		//scheduleAtFixedRatefixRate() 固定任务两次启动之间的时间间隔.
-		//scheduleAtFixedDelay()      固定任务结束后到下一次启动间的时间间隔.
-		scheduledExecutorService.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.SECONDS);
-	}
+        //scheduleAtFixedRatefixRate() 固定任务两次启动之间的时间间隔.
+        //scheduleAtFixedDelay()      固定任务结束后到下一次启动间的时间间隔.
+        scheduledExecutorService.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.SECONDS);
+    }
 
-	@PreDestroy
-	public void stop() {
-		ThreadUtils.normalShutdown(scheduledExecutorService, shutdownTimeout, TimeUnit.SECONDS);
-	}
+    @PreDestroy
+    public void stop() {
+        ThreadUtils.normalShutdown(scheduledExecutorService, shutdownTimeout, TimeUnit.SECONDS);
+    }
 
-	/**
-	 * 定时打印当前用户数到日志.
-	 */
-	public void run() {
-		long userCount = accountManager.getUserCount();
-		logger.info("There are {} user in database.", userCount);
-	}
+    /**
+     * 定时打印当前用户数到日志.
+     */
+    public void run() {
+        long userCount = accountManager.getUserCount();
+        logger.info("There are {} user in database.", userCount);
+    }
 
-	/**
-	 * 设置任务初始启动延时时间.
-	 */
-	public void setInitialDelay(int initialDelay) {
-		this.initialDelay = initialDelay;
-	}
+    /**
+     * 设置任务初始启动延时时间.
+     */
+    public void setInitialDelay(int initialDelay) {
+        this.initialDelay = initialDelay;
+    }
 
-	/**
-	 * 设置任务间隔时间,单位秒.
-	 */
-	public void setPeriod(int period) {
-		this.period = period;
-	}
+    /**
+     * 设置任务间隔时间,单位秒.
+     */
+    public void setPeriod(int period) {
+        this.period = period;
+    }
 
-	/**
-	 * 设置gracefulShutdown的等待时间,单位秒.
-	 */
-	public void setShutdownTimeout(int shutdownTimeout) {
-		this.shutdownTimeout = shutdownTimeout;
-	}
+    /**
+     * 设置gracefulShutdown的等待时间,单位秒.
+     */
+    public void setShutdownTimeout(int shutdownTimeout) {
+        this.shutdownTimeout = shutdownTimeout;
+    }
 
-	@Autowired
-	public void setAccountManager(AccountManager accountManager) {
-		this.accountManager = accountManager;
-	}
+    @Autowired
+    public void setAccountManager(AccountManager accountManager) {
+        this.accountManager = accountManager;
+    }
 }

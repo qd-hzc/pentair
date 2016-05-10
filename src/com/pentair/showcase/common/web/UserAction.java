@@ -20,242 +20,245 @@ import com.pentair.showcase.common.dao.*;
 import com.pentair.showcase.common.entity.*;
 import com.pentair.showcase.common.service.AccountManager;
 import com.pentair.showcase.security.LoginUser;
+
 /**
  * 用户管理Action.
- * 
+ *
  * @author calvin
  */
 @Namespace("/system")
-@InterceptorRefs( { @InterceptorRef("paramsPrepareParamsStack") })
+@InterceptorRefs({@InterceptorRef("paramsPrepareParamsStack")})
 @Results({
-	@Result(name = CrudActionSupport.RELOAD, location = "user.action", type = "redirect"),
-	@Result(name = "password_input", location = "/WEB-INF/content/system/password_input.jsp")
+        @Result(name = CrudActionSupport.RELOAD, location = "user.action", type = "redirect"),
+        @Result(name = "password_input", location = "/WEB-INF/content/system/password_input.jsp")
 })
 public class UserAction extends CrudActionSupport<User> {
 
-	private static final long serialVersionUID = 7240853226114035208L;
+    private static final long serialVersionUID = 7240853226114035208L;
 
-	private AccountManager accountManager;
-	private RoleDao roleDao;
-	private AreaDao areaDao;
-	private UserDao userDao;
-	private List<String> checkedRoles;
-	
+    private AccountManager accountManager;
+    private RoleDao roleDao;
+    private AreaDao areaDao;
+    private UserDao userDao;
+    private List<String> checkedRoles;
 
-	//-- 页面属性  --//
-	private String id;
-	private String area_id;
-	private String asm_id;
-	private User entity;
-	private List<User> allUserList;
-	private Integer workingVersion;//对象版本号, 配合Hibernate的@Version防止并发修改	
 
-	private List<String> checkedUserIds;
-	
-	private List<Area> areasAll;
-	private List<User> asmsAll;
+    //-- 页面属性  --//
+    private String id;
+    private String area_id;
+    private String asm_id;
+    private User entity;
+    private List<User> allUserList;
+    private Integer workingVersion;//对象版本号, 配合Hibernate的@Version防止并发修改
 
-	LoginUser loginUser=(LoginUser)SpringSecurityUtils.getCurrentUser();
+    private List<String> checkedUserIds;
 
-	//-- ModelDriven 与 Preparable函数 --//
-	public User getModel() {
-		return entity;
-	}
+    private List<Area> areasAll;
+    private List<User> asmsAll;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    LoginUser loginUser = (LoginUser) SpringSecurityUtils.getCurrentUser();
 
-	@Override
-	protected void prepareModel() throws Exception {
-		if (id != null && !id.equals("")) {
-			entity = accountManager.getUser(id);
-		} else {
-			entity = new User();
-		}
-	}
+    //-- ModelDriven 与 Preparable函数 --//
+    public User getModel() {
+        return entity;
+    }
 
-	//-- CRUD Action 函数 --//
-	@Override
-	public String list() throws Exception {
-		try {
-			allUserList = accountManager.getAllUserWithRole();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return SUCCESS;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	@Override
-	public String input() throws Exception {
-		if(entity!=null){
-			checkedRoles=new ArrayList<String>();
-			for(Role role:entity.getRoles()){
-				checkedRoles.add(role.getId());
-			}
-		}
-		if(entity.getArea() != null){
-			this.area_id=entity.getArea().getId();		
-		}
-		if(entity.getAsm() != null) {
-			this.asm_id = entity.getAsm().getId();
-		}
-		return INPUT;
-	}
+    @Override
+    protected void prepareModel() throws Exception {
+        if (id != null && !id.equals("")) {
+            entity = accountManager.getUser(id);
+        } else {
+            entity = new User();
+        }
+    }
 
-	/**
-	 * 保存用户时,演示Hibernate的version字段使用.
-	 */
-	@Override 
-	public String save() throws Exception {
+    //-- CRUD Action 函数 --//
+    @Override
+    public String list() throws Exception {
+        try {
+            allUserList = accountManager.getAllUserWithRole();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return SUCCESS;
+    }
 
-		if (id!=null&&!"".equals(id)&&workingVersion < entity.getVersion()) {
-			throw new StaleStateException("操作对象已被其他用户修改，请重新操作！");
-		}
-		entity.setArea(areaDao.get(area_id));
-		
-		if(asm_id != null && asm_id.length() > 0) {
-			entity.setAsm(userDao.getUserById(asm_id));
-		}
+    @Override
+    public String input() throws Exception {
+        if (entity != null) {
+            checkedRoles = new ArrayList<String>();
+            for (Role role : entity.getRoles()) {
+                checkedRoles.add(role.getId());
+            }
+        }
+        if (entity.getArea() != null) {
+            this.area_id = entity.getArea().getId();
+        }
+        if (entity.getAsm() != null) {
+            this.asm_id = entity.getAsm().getId();
+        }
+        return INPUT;
+    }
 
-		//更新用户角色
-		List<Role> roles=new ArrayList<Role>();
-		for(String roleId:checkedRoles){
-			roles.add(roleDao.get(roleId));
-		}
+    /**
+     * 保存用户时,演示Hibernate的version字段使用.
+     */
+    @Override
+    public String save() throws Exception {
 
-		entity.setRoles(roles);
+        if (id != null && !"".equals(id) && workingVersion < entity.getVersion()) {
+            throw new StaleStateException("操作对象已被其他用户修改，请重新操作！");
+        }
+        entity.setArea(areaDao.get(area_id));
 
-		accountManager.saveUser(entity);
-		
-		addActionMessage("用户信息保存成功！");
-		this.setPopup(true);//是弹出窗口
-		return "result_success";
-	}
+        if (asm_id != null && asm_id.length() > 0) {
+            entity.setAsm(userDao.getUserById(asm_id));
+        }
 
-	@Override
-	public String delete() throws Exception {
-		try {
-			if (id != null) {
-				entity = accountManager.getUser(id);
-				accountManager.deleteUser(entity);
-			}
-		} catch (Exception e) {
-			throw new StaleStateException("系统中有与该对象关联的数据，无法删除。");
-		}
-		return RELOAD;
-	}
+        //更新用户角色
+        List<Role> roles = new ArrayList<Role>();
+        for (String roleId : checkedRoles) {
+            roles.add(roleDao.get(roleId));
+        }
 
-	//-- 其他Action函数 --//
-	
-	public String changePasswordInput() throws Exception {
-		return "password_input";
-	}
-	
-	public String changePasswordSave() throws Exception {
-		System.out.println("==============="+loginUser);
-		entity = accountManager.getUser(loginUser.getId());
-		if(entity.getPlainPassword().equals(Struts2Utils.getRequest().getParameter("oldPassword"))){
-			entity.setPlainPassword(Struts2Utils.getRequest().getParameter("plainPassword"));
-			accountManager.saveUser(entity);
-			addActionMessage("密码修改成功！");
-			this.setPopup(true);//是弹出窗口
-			return "result_success";
-		}else{
-			throw new StaleStateException("原密码输入有误，请重新输入！");
-		}
-	}
-	
-	public String disableUsers() {
-		accountManager.disableUsers(checkedUserIds);
-		return RELOAD;
-	}
+        entity.setRoles(roles);
 
-	/**
-	 * 支持使用Jquery.validate Ajax检验用户名是否重复.
-	 */
-	public String checkLoginName() {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		String newLoginName = request.getParameter("loginName");
-		String oldLoginName = request.getParameter("oldLoginName");
+        accountManager.saveUser(entity);
 
-		if (accountManager.isLoginNameUnique(newLoginName, oldLoginName)) {
-			Struts2Utils.renderText("true");
-		} else {
-			Struts2Utils.renderText("false");
-		}
-		//因为直接输出内容而不经过jsp,因此返回null.
-		return null;
-	}
-	//-- 页面属性访问函数 --//
-	public List<User> getAllUserList() {
-		return allUserList;
-	}
+        addActionMessage("用户信息保存成功！");
+        this.setPopup(true);//是弹出窗口
+        return "result_success";
+    }
 
-	public String getArea_id() {
-		return area_id;
-	}
+    @Override
+    public String delete() throws Exception {
+        try {
+            if (id != null) {
+                entity = accountManager.getUser(id);
+                accountManager.deleteUser(entity);
+            }
+        } catch (Exception e) {
+            throw new StaleStateException("系统中有与该对象关联的数据，无法删除。");
+        }
+        return RELOAD;
+    }
 
-	public void setArea_id(String area_id) {
-		this.area_id = area_id;
-	}
+    //-- 其他Action函数 --//
 
-	public void setCheckedUserIds(List<String> checkedUserIds) {
-		this.checkedUserIds = checkedUserIds;
-	}
+    public String changePasswordInput() throws Exception {
+        return "password_input";
+    }
 
-	public void setWorkingVersion(Integer workingVersion) {
-		this.workingVersion = workingVersion;
-	}
+    public String changePasswordSave() throws Exception {
+        System.out.println("===============" + loginUser);
+        entity = accountManager.getUser(loginUser.getId());
+        if (entity.getPlainPassword().equals(Struts2Utils.getRequest().getParameter("oldPassword"))) {
+            entity.setPlainPassword(Struts2Utils.getRequest().getParameter("plainPassword"));
+            accountManager.saveUser(entity);
+            addActionMessage("密码修改成功！");
+            this.setPopup(true);//是弹出窗口
+            return "result_success";
+        } else {
+            throw new StaleStateException("原密码输入有误，请重新输入！");
+        }
+    }
 
-	public void setAccountManager(AccountManager accountManager) {
-		this.accountManager = accountManager;
-	}
-	
-	public void setRoleDao(RoleDao roleDao) {
-		this.roleDao = roleDao;
-	}
+    public String disableUsers() {
+        accountManager.disableUsers(checkedUserIds);
+        return RELOAD;
+    }
 
-	public List<Role> getRolesAll() {
-		return roleDao.getAll();
-	}
+    /**
+     * 支持使用Jquery.validate Ajax检验用户名是否重复.
+     */
+    public String checkLoginName() {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        String newLoginName = request.getParameter("loginName");
+        String oldLoginName = request.getParameter("oldLoginName");
 
-	public List<String> getCheckedRoles() {
-		return checkedRoles;
-	}
+        if (accountManager.isLoginNameUnique(newLoginName, oldLoginName)) {
+            Struts2Utils.renderText("true");
+        } else {
+            Struts2Utils.renderText("false");
+        }
+        //因为直接输出内容而不经过jsp,因此返回null.
+        return null;
+    }
 
-	public void setCheckedRoles(List<String> roles) {
-		this.checkedRoles = roles;
-	}
-	
-	public List<Area> getAreasAll() {
-		return areaDao.getAll();
-	}
-	public AreaDao getAreaDao() {
-		return areaDao;
-	}
+    //-- 页面属性访问函数 --//
+    public List<User> getAllUserList() {
+        return allUserList;
+    }
 
-	public void setAreaDao(AreaDao areaDao) {
-		this.areaDao = areaDao;
-	}
+    public String getArea_id() {
+        return area_id;
+    }
 
-	public List<User> getAsmsAll() {
-		return userDao.getUsersByRoleName("ASM");
-	}
+    public void setArea_id(String area_id) {
+        this.area_id = area_id;
+    }
 
-	public UserDao getUserDao() {
-		return userDao;
-	}
+    public void setCheckedUserIds(List<String> checkedUserIds) {
+        this.checkedUserIds = checkedUserIds;
+    }
 
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
+    public void setWorkingVersion(Integer workingVersion) {
+        this.workingVersion = workingVersion;
+    }
 
-	public String getAsm_id() {
-		return asm_id;
-	}
+    public void setAccountManager(AccountManager accountManager) {
+        this.accountManager = accountManager;
+    }
 
-	public void setAsm_id(String asm_id) {
-		this.asm_id = asm_id;
-	}
+    public void setRoleDao(RoleDao roleDao) {
+        this.roleDao = roleDao;
+    }
+
+    public List<Role> getRolesAll() {
+        return roleDao.getAll();
+    }
+
+    public List<String> getCheckedRoles() {
+        return checkedRoles;
+    }
+
+    public void setCheckedRoles(List<String> roles) {
+        this.checkedRoles = roles;
+    }
+
+    public List<Area> getAreasAll() {
+        return areaDao.getAll();
+    }
+
+    public AreaDao getAreaDao() {
+        return areaDao;
+    }
+
+    public void setAreaDao(AreaDao areaDao) {
+        this.areaDao = areaDao;
+    }
+
+    public List<User> getAsmsAll() {
+        return userDao.getUsersByRoleName("ASM");
+    }
+
+    public UserDao getUserDao() {
+        return userDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public String getAsm_id() {
+        return asm_id;
+    }
+
+    public void setAsm_id(String asm_id) {
+        this.asm_id = asm_id;
+    }
 }

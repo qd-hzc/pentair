@@ -4,7 +4,6 @@ package com.pentair.utils;
 /**
  * Base32编码解码
  * RFC3548 Base32 (see http://www.faqs.org/rfcs/rfc3548.html )
- *
  */
 public class Base32Util {
     /* lookup table used to encode() groups of 5 bits of data */
@@ -12,16 +11,16 @@ public class Base32Util {
 
     /* lookup table used to decode() characters in Base32 strings */
     private static final int[] base32Lookup = {
-      0xFF,0xFF,0x1A,0x1B,0x1C,0x1D,0x1E,0x1F, // '0', '1', '2', '3', '4', '5', '6', '7'
-      0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF, // '8', '9', ':', ';', '<', '=', '>', '?'
-      0xFF,0x00,0x01,0x02,0x03,0x04,0x05,0x06, // '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G'
-      0x07,0x08,0x09,0x0A,0x0B,0x0C,0x0D,0x0E, // 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'
-      0x0F,0x10,0x11,0x12,0x13,0x14,0x15,0x16, // 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W'
-      0x17,0x18,0x19,0xFF,0xFF,0xFF,0xFF,0xFF, // 'X', 'Y', 'Z', '[', '\', ']', '^', '_'
-      0xFF,0x00,0x01,0x02,0x03,0x04,0x05,0x06, // '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g'
-      0x07,0x08,0x09,0x0A,0x0B,0x0C,0x0D,0x0E, // 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o'
-      0x0F,0x10,0x11,0x12,0x13,0x14,0x15,0x16, // 'p', 'q', 'r', 's', 't', 'u', 'v', 'w'
-      0x17,0x18,0x19,0xFF,0xFF,0xFF,0xFF,0xFF  // 'x', 'y', 'z', '{', '|', '}', '~', 'DEL'
+            0xFF, 0xFF, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, // '0', '1', '2', '3', '4', '5', '6', '7'
+            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, // '8', '9', ':', ';', '<', '=', '>', '?'
+            0xFF, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, // '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G'
+            0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, // 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'
+            0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, // 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W'
+            0x17, 0x18, 0x19, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, // 'X', 'Y', 'Z', '[', '\', ']', '^', '_'
+            0xFF, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, // '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g'
+            0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, // 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o'
+            0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, // 'p', 'q', 'r', 's', 't', 'u', 'v', 'w'
+            0x17, 0x18, 0x19, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF  // 'x', 'y', 'z', '{', '|', '}', '~', 'DEL'
     };
 
     /**
@@ -42,7 +41,7 @@ public class Base32Util {
             if (index > 3) {
                 if ((i + 1) < bytes.length) {
                     nextByte =
-                        (bytes[i + 1] >= 0) ? bytes[i + 1] : (bytes[i + 1] + 256);
+                            (bytes[i + 1] >= 0) ? bytes[i + 1] : (bytes[i + 1] + 256);
                 } else {
                     nextByte = 0;
                 }
@@ -115,17 +114,17 @@ public class Base32Util {
 
 
     static public void main(String[] args) throws Exception {
-    	String text = "Base32: 谢谢您耐着性子看完我的教程！ ：）123bs适当モ《方＃ぞラ︼Ж┷式来d的ǎΘà的⒐萨芬了?.,<>";
+        String text = "Base32: 谢谢您耐着性子看完我的教程！ ：）123bs适当モ《方＃ぞラ︼Ж┷式来d的ǎΘà的⒐萨芬了?.,<>";
         System.out.println("		Original: " + text);
 
-        System.out.print  ("Reencoded Base32: ");
+        System.out.print("Reencoded Base32: ");
         String encoded = Base32Util.encode(text.getBytes("utf-8"));
         System.out.println(encoded);
 
         byte[] decoded = Base32Util.decode(encoded);
-        System.out.print  ("   Redecoded Hex: ");
+        System.out.print("   Redecoded Hex: ");
         byte[] redecoded = Base32Util.decode(encoded);
-        for(int i = 0; i < decoded.length ; i++) {
+        for (int i = 0; i < decoded.length; i++) {
             int b = redecoded[i] & 255;
             System.out.print((Integer.toHexString(b + 256)).substring(1));
         }

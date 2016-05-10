@@ -21,59 +21,59 @@ import com.pentair.showcase.ws.server.result.SmallImageResult;
 
 /**
  * WebService传输二进制数据测试.
- * 
+ *
  * @author calvin
  */
 public class BinaryWebServiceTest extends BaseFunctionalTestCase {
 
-	@Test
-	public void getSmallImage() throws IOException {
+    @Test
+    public void getSmallImage() throws IOException {
 
-		//创建SmallImageService
-		String address = BASE_URL + "/services/SmallImageService";
-		JaxWsProxyFactoryBean proxyFactory = new JaxWsProxyFactoryBean();
-		proxyFactory.setAddress(address);
-		proxyFactory.setServiceClass(SmallImageWebService.class);
-		SmallImageWebService imageService = (SmallImageWebService) proxyFactory.create();
+        //创建SmallImageService
+        String address = BASE_URL + "/services/SmallImageService";
+        JaxWsProxyFactoryBean proxyFactory = new JaxWsProxyFactoryBean();
+        proxyFactory.setAddress(address);
+        proxyFactory.setServiceClass(SmallImageWebService.class);
+        SmallImageWebService imageService = (SmallImageWebService) proxyFactory.create();
 
-		//调用SmallImageService
-		SmallImageResult result = imageService.getImage();
-		assertTrue(result.getImageData().length > 0);
+        //调用SmallImageService
+        SmallImageResult result = imageService.getImage();
+        assertTrue(result.getImageData().length > 0);
 
-		//保存图片文件并校验
-		String tempFilePath = System.getProperty("java.io.tmpdir") + "smalllogo.jpg";
-		OutputStream os = new FileOutputStream(tempFilePath);
-		IOUtils.write(result.getImageData(), os);
-		IOUtils.closeQuietly(os);
-		System.out.println("图片已保存至" + tempFilePath);
-	}
+        //保存图片文件并校验
+        String tempFilePath = System.getProperty("java.io.tmpdir") + "smalllogo.jpg";
+        OutputStream os = new FileOutputStream(tempFilePath);
+        IOUtils.write(result.getImageData(), os);
+        IOUtils.closeQuietly(os);
+        System.out.println("图片已保存至" + tempFilePath);
+    }
 
-	@Test
-	public void getLargeImage() throws IOException {
+    @Test
+    public void getLargeImage() throws IOException {
 
-		//创建LargeImageService
-		String address = BASE_URL + "/services/LargeImageService";
-		JaxWsProxyFactoryBean proxyFactory = new JaxWsProxyFactoryBean();
-		proxyFactory.setAddress(address);
-		proxyFactory.setServiceClass(LargeImageWebService.class);
-		LargeImageWebService imageService = (LargeImageWebService) proxyFactory.create();
+        //创建LargeImageService
+        String address = BASE_URL + "/services/LargeImageService";
+        JaxWsProxyFactoryBean proxyFactory = new JaxWsProxyFactoryBean();
+        proxyFactory.setAddress(address);
+        proxyFactory.setServiceClass(LargeImageWebService.class);
+        LargeImageWebService imageService = (LargeImageWebService) proxyFactory.create();
 
-		//调用LargeImageService
-		LargeImageResult result = imageService.getImage();
-		DataHandler dataHandler = result.getImageData();
+        //调用LargeImageService
+        LargeImageResult result = imageService.getImage();
+        DataHandler dataHandler = result.getImageData();
 
-		//保存图片文件并校验
-		String tempFilePath = System.getProperty("java.io.tmpdir") + "largelogo.jpg";
+        //保存图片文件并校验
+        String tempFilePath = System.getProperty("java.io.tmpdir") + "largelogo.jpg";
 
-		InputStream is = dataHandler.getInputStream();
-		OutputStream os = new FileOutputStream(tempFilePath);
+        InputStream is = dataHandler.getInputStream();
+        OutputStream os = new FileOutputStream(tempFilePath);
 
-		IOUtils.copy(is, os);
-		IOUtils.closeQuietly(is);
-		IOUtils.closeQuietly(os);
-		System.out.println("图片已保存至" + tempFilePath);
+        IOUtils.copy(is, os);
+        IOUtils.closeQuietly(is);
+        IOUtils.closeQuietly(os);
+        System.out.println("图片已保存至" + tempFilePath);
 
-		File tempFile = new File(tempFilePath);
-		assertTrue(tempFile.length() > 0);
-	}
+        File tempFile = new File(tempFilePath);
+        assertTrue(tempFile.length() > 0);
+    }
 }

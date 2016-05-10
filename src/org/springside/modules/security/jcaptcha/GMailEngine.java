@@ -1,8 +1,8 @@
 /**
  * Copyright (c) 2005-2010 springside.org.cn
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
- * 
+ * <p>
  * $Id: GMailEngine.java 1211 2010-09-10 16:20:45Z calvinxiu $
  */
 package org.springside.modules.security.jcaptcha;
@@ -31,38 +31,38 @@ import com.octo.captcha.image.gimpy.GimpyFactory;
 
 /**
  * JCaptcha验证码图片生成引擎,仿照JCaptcha2.0编写类似GMail验证码的样式.
- * 
+ *
  * @author calvin
  */
 public class GMailEngine extends ListImageCaptchaEngine {
 
-	@Override
-	protected void buildInitialFactories() {
-		int minWordLength = 4;
-		int maxWordLength = 5;
-		int fontSize = 50;
-		int imageWidth = 250;
-		int imageHeight = 100;
+    @Override
+    protected void buildInitialFactories() {
+        int minWordLength = 4;
+        int maxWordLength = 5;
+        int fontSize = 50;
+        int imageWidth = 250;
+        int imageHeight = 100;
 
-		//word generator
-		WordGenerator dictionnaryWords = new ComposeDictionaryWordGenerator(new FileDictionary("toddlist"));
+        //word generator
+        WordGenerator dictionnaryWords = new ComposeDictionaryWordGenerator(new FileDictionary("toddlist"));
 
-		//word2image components
-		TextPaster randomPaster = new DecoratedRandomTextPaster(minWordLength, maxWordLength,
-				new RandomListColorGenerator(new Color[] { new Color(23, 170, 27), new Color(220, 34, 11),
-						new Color(23, 67, 172) }), new TextDecorator[] {});
-		BackgroundGenerator background = new UniColorBackgroundGenerator(imageWidth, imageHeight, Color.white);
-		FontGenerator font = new RandomFontGenerator(fontSize, fontSize, new Font[] {
-				new Font("nyala", Font.BOLD, fontSize), new Font("Bell MT", Font.PLAIN, fontSize),
-				new Font("Credit valley", Font.BOLD, fontSize) });
+        //word2image components
+        TextPaster randomPaster = new DecoratedRandomTextPaster(minWordLength, maxWordLength,
+                new RandomListColorGenerator(new Color[]{new Color(23, 170, 27), new Color(220, 34, 11),
+                        new Color(23, 67, 172)}), new TextDecorator[]{});
+        BackgroundGenerator background = new UniColorBackgroundGenerator(imageWidth, imageHeight, Color.white);
+        FontGenerator font = new RandomFontGenerator(fontSize, fontSize, new Font[]{
+                new Font("nyala", Font.BOLD, fontSize), new Font("Bell MT", Font.PLAIN, fontSize),
+                new Font("Credit valley", Font.BOLD, fontSize)});
 
-		ImageDeformation postDef = new ImageDeformationByFilters(new ImageFilter[] {});
-		ImageDeformation backDef = new ImageDeformationByFilters(new ImageFilter[] {});
-		ImageDeformation textDef = new ImageDeformationByFilters(new ImageFilter[] {});
+        ImageDeformation postDef = new ImageDeformationByFilters(new ImageFilter[]{});
+        ImageDeformation backDef = new ImageDeformationByFilters(new ImageFilter[]{});
+        ImageDeformation textDef = new ImageDeformationByFilters(new ImageFilter[]{});
 
-		WordToImage word2image = new DeformedComposedWordToImage(font, background, randomPaster, backDef, textDef,
-				postDef);
-		addFactory(new GimpyFactory(dictionnaryWords, word2image));
-	}
+        WordToImage word2image = new DeformedComposedWordToImage(font, background, randomPaster, backDef, textDef,
+                postDef);
+        addFactory(new GimpyFactory(dictionnaryWords, word2image));
+    }
 
 }

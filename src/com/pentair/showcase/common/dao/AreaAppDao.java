@@ -11,13 +11,13 @@ import com.pentair.showcase.common.entity.Subject;
 
 @Component
 public class AreaAppDao extends HibernateDao<AreaApp, String> {
-	private static final String QUERY_WITH_DETAIL = "from AreaApp r fetch all properties where r.area=? and r.brand=?";
+    private static final String QUERY_WITH_DETAIL = "from AreaApp r fetch all properties where r.area=? and r.brand=?";
 
-	/**
-	 * 获取回复内容.
-	 */
-	public AreaApp getAreaApp(Area area, Brand brand) {
-		return (AreaApp) findUnique(QUERY_WITH_DETAIL, area, brand);
-	}
+    /**
+     * 获取回复内容.
+     */
+    public AreaApp getAreaApp(Area area, Brand brand) {
+        return (AreaApp) findUnique(QUERY_WITH_DETAIL, area, brand);
+    }
 
 }

@@ -22,79 +22,79 @@ import com.google.common.collect.Maps;
 //根节点
 @XmlRootElement
 //指定子节点的顺序
-@XmlType(propOrder = { "name", "roles", "interests", "houses" })
+@XmlType(propOrder = {"name", "roles", "interests", "houses"})
 public class User {
 
-	private Long id;
-	private String name;
-	private String password;
+    private Long id;
+    private String name;
+    private String password;
 
-	private List<Role> roles = Lists.newArrayList();
-	private List<String> interests = Lists.newArrayList();
-	private Map<String, String> houses = Maps.newHashMap();
+    private List<Role> roles = Lists.newArrayList();
+    private List<String> interests = Lists.newArrayList();
+    private Map<String, String> houses = Maps.newHashMap();
 
-	//设置转换为xml节点中的属性
-	@XmlAttribute
-	public Long getId() {
-		return id;
-	}
+    //设置转换为xml节点中的属性
+    @XmlAttribute
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	//设置不转换为xml
-	@XmlTransient
-	public String getPassword() {
-		return password;
-	}
+    //设置不转换为xml
+    @XmlTransient
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	//设置对List<Object>的映射, xml为<roles><role id="1" name="admin"/></roles>
-	@XmlElementWrapper(name = "roles")
-	@XmlElement(name = "role")
-	public List<Role> getRoles() {
-		return roles;
-	}
+    //设置对List<Object>的映射, xml为<roles><role id="1" name="admin"/></roles>
+    @XmlElementWrapper(name = "roles")
+    @XmlElement(name = "role")
+    public List<Role> getRoles() {
+        return roles;
+    }
 
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
-	}
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 
-	//设置对List<String>的映射, xml为<interests><interest>movie</interest></interests>
-	@XmlElementWrapper(name = "interests")
-	@XmlElement(name = "interest")
-	public List<String> getInterests() {
-		return interests;
-	}
+    //设置对List<String>的映射, xml为<interests><interest>movie</interest></interests>
+    @XmlElementWrapper(name = "interests")
+    @XmlElement(name = "interest")
+    public List<String> getInterests() {
+        return interests;
+    }
 
-	public void setInterests(List<String> interests) {
-		this.interests = interests;
-	}
+    public void setInterests(List<String> interests) {
+        this.interests = interests;
+    }
 
-	//设置对Map的映射为<houses><house key="bj">house1</house></houses>
-	@XmlJavaTypeAdapter(HouseMapAdapter.class)
-	public Map<String, String> getHouses() {
-		return houses;
-	}
+    //设置对Map的映射为<houses><house key="bj">house1</house></houses>
+    @XmlJavaTypeAdapter(HouseMapAdapter.class)
+    public Map<String, String> getHouses() {
+        return houses;
+    }
 
-	public void setHouses(Map<String, String> houses) {
-		this.houses = houses;
-	}
+    public void setHouses(Map<String, String> houses) {
+        this.houses = houses;
+    }
 
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
 }

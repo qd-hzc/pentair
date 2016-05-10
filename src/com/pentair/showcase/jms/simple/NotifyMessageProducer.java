@@ -10,46 +10,46 @@ import com.pentair.showcase.common.entity.User;
 
 /**
  * JMS用户变更消息生产者.
- * 
+ * <p>
  * 使用jmsTemplate将用户变更消息分别发送到queue与topic.
- * 
+ *
  * @author calvin
  */
 @SuppressWarnings("unchecked")
 public class NotifyMessageProducer {
 
-	private JmsTemplate jmsTemplate;
-	private Destination notifyQueue;
-	private Destination notifyTopic;
+    private JmsTemplate jmsTemplate;
+    private Destination notifyQueue;
+    private Destination notifyTopic;
 
-	public void sendQueue(final User user) {
-		sendMessage(user, notifyQueue);
-	}
+    public void sendQueue(final User user) {
+        sendMessage(user, notifyQueue);
+    }
 
-	public void sendTopic(final User user) {
-		sendMessage(user, notifyTopic);
-	}
+    public void sendTopic(final User user) {
+        sendMessage(user, notifyTopic);
+    }
 
-	/**
-	 * 使用jmsTemplate最简便的封装convertAndSend()发送Map类型的消息.
-	 */
-	private void sendMessage(User user, Destination destination) {
-		Map map = new HashMap();
-		map.put("userName", user.getName());
-		map.put("email", user.getEmail());
+    /**
+     * 使用jmsTemplate最简便的封装convertAndSend()发送Map类型的消息.
+     */
+    private void sendMessage(User user, Destination destination) {
+        Map map = new HashMap();
+        map.put("userName", user.getName());
+        map.put("email", user.getEmail());
 
-		jmsTemplate.convertAndSend(destination, map);
-	}
+        jmsTemplate.convertAndSend(destination, map);
+    }
 
-	public void setJmsTemplate(JmsTemplate jmsTemplate) {
-		this.jmsTemplate = jmsTemplate;
-	}
+    public void setJmsTemplate(JmsTemplate jmsTemplate) {
+        this.jmsTemplate = jmsTemplate;
+    }
 
-	public void setNotifyQueue(Destination notifyQueue) {
-		this.notifyQueue = notifyQueue;
-	}
+    public void setNotifyQueue(Destination notifyQueue) {
+        this.notifyQueue = notifyQueue;
+    }
 
-	public void setNotifyTopic(Destination nodifyTopic) {
-		this.notifyTopic = nodifyTopic;
-	}
+    public void setNotifyTopic(Destination nodifyTopic) {
+        this.notifyTopic = nodifyTopic;
+    }
 }

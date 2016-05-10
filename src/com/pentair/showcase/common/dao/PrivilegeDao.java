@@ -8,7 +8,7 @@ import com.pentair.showcase.common.entity.Privilege;
 
 /**
  * 权限对象的泛型Hibernate Dao.
- * 
+ *
  * @author calvin
  */
 @Component

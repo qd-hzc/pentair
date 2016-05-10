@@ -8,26 +8,27 @@ import java.util.Properties;
 
 /****
  * 读取properties文件
- * @author Administrator
  *
+ * @author Administrator
  */
 public class PropertiesReader {
-	
+
     private static PropertiesReader instance = null;
 
     private Properties properties = null;
 
-    
+
     private PropertiesReader(String path) {
         properties = this.createProperties(path);
         if (properties == null)
             properties = new Properties();
     }
 
-   /**
-    * 默认读取struts.propertis文件
-    * @return 返回PropertiesReader的实例
-    */
+    /**
+     * 默认读取struts.propertis文件
+     *
+     * @return 返回PropertiesReader的实例
+     */
     public static PropertiesReader getIntance() {
         if (instance == null)
             instance = new PropertiesReader("/application.properties");
@@ -36,25 +37,27 @@ public class PropertiesReader {
 
     /**
      * 读取指定路径的properties文件
+     *
      * @param path properties文件路径
      * @return 返回PropertiesReader的实例
      */
     public static PropertiesReader getIntance(String path) {
-    	if (path==null || "".equals(path)){
-    		return getIntance();
-    	}
+        if (path == null || "".equals(path)) {
+            return getIntance();
+        }
         instance = new PropertiesReader(path);
         return instance;
     }
 
     /**
      * 根据资源名获取资源内容
+     *
      * @param {String} key 资源文件内key
      * @param {Stirng} defaultValue 默认值
      * @reaurn String key对应的资源内容
      */
     public String getProperty(String key, String defaultValue) {
-        if (key==null || "".equals(key)){
+        if (key == null || "".equals(key)) {
             return "";
         }
         return properties.getProperty(key, defaultValue);
@@ -73,22 +76,23 @@ public class PropertiesReader {
         if (obj != null) {
             try {
                 p = new Properties();
-				p.load((InputStream) obj);
-				((InputStream) obj).close();
-			} catch (IOException e) {
-				p = null;
-			}
-		}
-		return p;
-	}
-    
+                p.load((InputStream) obj);
+                ((InputStream) obj).close();
+            } catch (IOException e) {
+                p = null;
+            }
+        }
+        return p;
+    }
+
     /**
      * 通过输入的properties文件的key得到value
+     *
      * @param key
      * @return value
      */
     public String getProperty(String key) {
-        if (key==null || "".equals(key))
+        if (key == null || "".equals(key))
             return "";
         return properties.getProperty(key);
     }

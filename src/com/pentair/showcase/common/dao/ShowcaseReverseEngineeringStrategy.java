@@ -5,12 +5,12 @@ import org.springside.modules.orm.hibernate.IgnorePrefixReverseEngineeringStrate
 
 public class ShowcaseReverseEngineeringStrategy extends IgnorePrefixReverseEngineeringStrategy {
 
-	public ShowcaseReverseEngineeringStrategy(ReverseEngineeringStrategy delegate) {
-		super(delegate);
-	}
+    public ShowcaseReverseEngineeringStrategy(ReverseEngineeringStrategy delegate) {
+        super(delegate);
+    }
 
-	@Override
-	protected int getPrefixLength() {
-		return 2;
-	}
+    @Override
+    protected int getPrefixLength() {
+        return 2;
+    }
 }

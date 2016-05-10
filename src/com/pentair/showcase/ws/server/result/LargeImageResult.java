@@ -7,23 +7,23 @@ import javax.xml.bind.annotation.XmlType;
 import com.pentair.showcase.ws.server.WsConstants;
 
 /**
- * 演示以MTOM附件协议传输Streaming DataHandler的二进制数据传输的方式. 
- * 
+ * 演示以MTOM附件协议传输Streaming DataHandler的二进制数据传输的方式.
+ *
  * @author calvin
  */
 @XmlType(name = "LargeImageResult", namespace = WsConstants.NS)
 public class LargeImageResult extends WSResult {
 
-	private static final long serialVersionUID = 8375875101365439245L;
+    private static final long serialVersionUID = 8375875101365439245L;
 
-	private DataHandler imageData;
+    private DataHandler imageData;
 
-	@XmlMimeType("application/octet-stream")
-	public DataHandler getImageData() {
-		return imageData;
-	}
+    @XmlMimeType("application/octet-stream")
+    public DataHandler getImageData() {
+        return imageData;
+    }
 
-	public void setImageData(DataHandler imageData) {
-		this.imageData = imageData;
-	}
+    public void setImageData(DataHandler imageData) {
+        this.imageData = imageData;
+    }
 }

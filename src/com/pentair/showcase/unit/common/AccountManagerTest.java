@@ -14,42 +14,42 @@ import com.pentair.showcase.common.service.ServiceException;
 
 public class AccountManagerTest {
 
-	private IMocksControl control = EasyMock.createControl();
+    private IMocksControl control = EasyMock.createControl();
 
-	private AccountManager accountManager;
-	private UserDao mockUserDao;
+    private AccountManager accountManager;
+    private UserDao mockUserDao;
 
-	@Before
-	public void setUp() {
-		accountManager = new AccountManager();
-		mockUserDao = control.createMock(UserDao.class);
-		accountManager.setUserDao(mockUserDao);
-	}
+    @Before
+    public void setUp() {
+        accountManager = new AccountManager();
+        mockUserDao = control.createMock(UserDao.class);
+        accountManager.setUserDao(mockUserDao);
+    }
 
-	@After
-	public void tearDown() {
-		control.verify();
-	}
+    @After
+    public void tearDown() {
+        control.verify();
+    }
 
-	@Test
-	public void saveUser() {
-		User admin = new User();
-		admin.setId("1");
-		User user = new User();
-		user.setId("2");
+    @Test
+    public void saveUser() {
+        User admin = new User();
+        admin.setId("1");
+        User user = new User();
+        user.setId("2");
 
-		mockUserDao.save(user);
-		control.replay();
+        mockUserDao.save(user);
+        control.replay();
 
-		//正常保存用户.
-		accountManager.saveUser(user);
+        //正常保存用户.
+        accountManager.saveUser(user);
 
-		//保存超级管理用户抛出异常.
-		try {
-			accountManager.saveUser(admin);
-			fail("expected ServicExcepton not be thrown");
-		} catch (ServiceException e) {
-			//expected exception
-		}
-	}
+        //保存超级管理用户抛出异常.
+        try {
+            accountManager.saveUser(admin);
+            fail("expected ServicExcepton not be thrown");
+        } catch (ServiceException e) {
+            //expected exception
+        }
+    }
 }

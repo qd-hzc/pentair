@@ -25,168 +25,169 @@ import com.google.common.collect.Lists;
 
 /**
  * 用户.
- * 
+ *
  * @author calvin
  */
 @Entity
 @Table(name = "SS_USER")
 public class User extends AuditableEntity {
-	private String loginName;
-	private String plainPassword;
-	private String shaPassword;
-	private String name;
-	private String email;
-	private String status="启用";
-	private Integer version;
-	private String englishName;
-	private String shortName;
-	private String mac;
+    private String loginName;
+    private String plainPassword;
+    private String shaPassword;
+    private String name;
+    private String email;
+    private String status = "启用";
+    private Integer version;
+    private String englishName;
+    private String shortName;
+    private String mac;
 
-	private Area area;
-	private User asm;
-	
-	private List<Role> roles = Lists.newArrayList(); //有序的关联对象集合
+    private Area area;
+    private User asm;
 
-	//Hibernate自动维护的Version字段
-	@Version
-	public Integer getVersion() {
-		return version;
-	}
+    private List<Role> roles = Lists.newArrayList(); //有序的关联对象集合
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+    //Hibernate自动维护的Version字段
+    @Version
+    public Integer getVersion() {
+        return version;
+    }
 
-	@Column(nullable = false, unique = true)
-	public String getLoginName() {
-		return loginName;
-	}
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
-	public void setLoginName(String loginName) {
-		this.loginName = loginName;
-	}
+    @Column(nullable = false, unique = true)
+    public String getLoginName() {
+        return loginName;
+    }
 
-	/**
-	 * 明文密码.
-	 */
-	public String getPlainPassword() {
-		return plainPassword;
-	}
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
 
-	public void setPlainPassword(String plainPassword) {
-		this.plainPassword = plainPassword;
-	}
+    /**
+     * 明文密码.
+     */
+    public String getPlainPassword() {
+        return plainPassword;
+    }
 
-	/**
-	 * SHA1散列密码.
-	 */
-	public String getShaPassword() {
-		return shaPassword;
-	}
+    public void setPlainPassword(String plainPassword) {
+        this.plainPassword = plainPassword;
+    }
 
-	public void setShaPassword(String shaPassword) {
-		this.shaPassword = shaPassword;
-	}
+    /**
+     * SHA1散列密码.
+     */
+    public String getShaPassword() {
+        return shaPassword;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setShaPassword(String shaPassword) {
+        this.shaPassword = shaPassword;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public String getEnglishName() {
-		return englishName;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public void setEnglishName(String englishName) {
-		this.englishName = englishName;
-	}
+    public String getEnglishName() {
+        return englishName;
+    }
 
-	public String getShortName() {
-		return shortName;
-	}
+    public void setEnglishName(String englishName) {
+        this.englishName = englishName;
+    }
 
-	public void setShortName(String shortName) {
-		this.shortName = shortName;
-	}
+    public String getShortName() {
+        return shortName;
+    }
 
-	public String getMac() {
-		return mac;
-	}
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
 
-	public void setMac(String mac) {
-		this.mac = mac;
-	}
-	//多对多定义
-	@ManyToMany
-	//中间表定义,表名采用默认命名规则
-	@JoinTable(name = "SS_USER_ROLE", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_ID") })
-	//Fecth策略定义
-	@Fetch(FetchMode.SUBSELECT)
-	//集合按id排序
-	@OrderBy("id ASC")
-	public List<Role> getRoles() {
-		return roles;
-	}
+    public String getMac() {
+        return mac;
+    }
 
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
-	}
-	
-	//与地区的多对一关系
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "area")
-	public Area getArea() {
-		return area;
-	}
+    public void setMac(String mac) {
+        this.mac = mac;
+    }
 
-	public void setArea(Area area) {
-		this.area = area;
-	}
+    //多对多定义
+    @ManyToMany
+    //中间表定义,表名采用默认命名规则
+    @JoinTable(name = "SS_USER_ROLE", joinColumns = {@JoinColumn(name = "USER_ID")}, inverseJoinColumns = {@JoinColumn(name = "ROLE_ID")})
+    //Fecth策略定义
+    @Fetch(FetchMode.SUBSELECT)
+    //集合按id排序
+    @OrderBy("id ASC")
+    public List<Role> getRoles() {
+        return roles;
+    }
 
-	@Transient
-	@JsonIgnore
-	public String getRoleNames() {
-		return ConvertUtils.convertElementPropertyToString(roles, "name", ",");
-	}
-	
-	@Transient
-	@JsonIgnore
-	public String getRoleShortNames() {
-		return ConvertUtils.convertElementPropertyToString(roles, "shortName", ",");
-	}
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
+    //与地区的多对一关系
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "area")
+    public Area getArea() {
+        return area;
+    }
 
-	//与地区的多对一关系
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "asm")
-	public User getAsm() {
-		return asm;
-	}
+    public void setArea(Area area) {
+        this.area = area;
+    }
 
-	public void setAsm(User asm) {
-		this.asm = asm;
-	}
+    @Transient
+    @JsonIgnore
+    public String getRoleNames() {
+        return ConvertUtils.convertElementPropertyToString(roles, "name", ",");
+    }
+
+    @Transient
+    @JsonIgnore
+    public String getRoleShortNames() {
+        return ConvertUtils.convertElementPropertyToString(roles, "shortName", ",");
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
+
+    //与地区的多对一关系
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "asm")
+    public User getAsm() {
+        return asm;
+    }
+
+    public void setAsm(User asm) {
+        this.asm = asm;
+    }
 }

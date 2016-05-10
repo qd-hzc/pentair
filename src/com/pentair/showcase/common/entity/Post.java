@@ -25,47 +25,47 @@ import org.hibernate.annotations.ForceDiscriminator;
 //查询对象时强制加入子类标识字段
 @ForceDiscriminator
 public abstract class Post extends IdEntity {
-	protected String title;
-	protected String content;
-	protected User user;
-	protected Date modifyTime;
+    protected String title;
+    protected String content;
+    protected User user;
+    protected Date modifyTime;
 
-	@Column(nullable = false)
-	public String getTitle() {
-		return title;
-	}
+    @Column(nullable = false)
+    public String getTitle() {
+        return title;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	//延时加载的Lob字段, 需要运行instrument任务进行bytecode enhancement
-	@Lob
-	@Basic(fetch = FetchType.LAZY)
-	public String getContent() {
-		return content;
-	}
+    //延时加载的Lob字段, 需要运行instrument任务进行bytecode enhancement
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    public String getContent() {
+        return content;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	//与用户的多对一映射
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	public User getUser() {
-		return user;
-	}
+    //与用户的多对一映射
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    public User getUser() {
+        return user;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public Date getModifyTime() {
-		return modifyTime;
-	}
+    public Date getModifyTime() {
+        return modifyTime;
+    }
 
-	public void setModifyTime(Date modifyTime) {
-		this.modifyTime = modifyTime;
-	}
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
+    }
 }

@@ -11,25 +11,25 @@ import org.springside.modules.log.MockLog4jAppender;
 
 public class TraceUtilsTest {
 
-	Logger logger = LoggerFactory.getLogger(TraceUtilsTest.class);
+    Logger logger = LoggerFactory.getLogger(TraceUtilsTest.class);
 
-	@Test
-	public void test() {
-		MockLog4jAppender appender = new MockLog4jAppender();
-		appender.addToLogger(TraceUtilsTest.class);
+    @Test
+    public void test() {
+        MockLog4jAppender appender = new MockLog4jAppender();
+        appender.addToLogger(TraceUtilsTest.class);
 
-		//begin trace
-		TraceUtils.beginTrace();
-		assertNotNull(MDC.get(TraceUtils.TRACE_ID_KEY));
-		assertEquals(TraceUtils.TRACE_ID_LENGTH, ((String) MDC.get(TraceUtils.TRACE_ID_KEY)).length());
+        //begin trace
+        TraceUtils.beginTrace();
+        assertNotNull(MDC.get(TraceUtils.TRACE_ID_KEY));
+        assertEquals(TraceUtils.TRACE_ID_LENGTH, ((String) MDC.get(TraceUtils.TRACE_ID_KEY)).length());
 
-		//log message
-		logger.info("message");
-		assertEquals("message", appender.getAllLogs().get(0).getMessage());
-		assertNotNull(MDC.get(TraceUtils.TRACE_ID_KEY));
+        //log message
+        logger.info("message");
+        assertEquals("message", appender.getAllLogs().get(0).getMessage());
+        assertNotNull(MDC.get(TraceUtils.TRACE_ID_KEY));
 
-		//end trace
-		TraceUtils.endTrace();
-		assertNull(MDC.get(TraceUtils.TRACE_ID_KEY));
-	}
+        //end trace
+        TraceUtils.endTrace();
+        assertNull(MDC.get(TraceUtils.TRACE_ID_KEY));
+    }
 }

@@ -14,10 +14,9 @@ import java.lang.annotation.Target;
 
 /**
  * 标识一个方法将通过AOP进行Traced.
- * 
- * @see TraceAspect
- * 
+ *
  * @author George
+ * @see TraceAspect
  */
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)

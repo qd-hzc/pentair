@@ -33,99 +33,99 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 获取远程静态内容并进行展示的Servlet.
- * 
+ * <p>
  * 演示使用多线程安全的Apache HttpClient获取远程静态内容.
- * 
+ * <p>
  * 演示访问地址如下(contentUrl已经过URL编码):
  * remote-content?contentUrl=http%3A%2F%2Flocalhost%3A8080%2Fshowcase%2Fimg%2Flogo.jpg
- * 
+ *
  * @author calvin
  */
 public class RemoteContentServlet extends HttpServlet {
 
-	private static final long serialVersionUID = -8483811141908827663L;
+    private static final long serialVersionUID = -8483811141908827663L;
 
-	private static Logger logger = LoggerFactory.getLogger(RemoteContentServlet.class);
+    private static Logger logger = LoggerFactory.getLogger(RemoteContentServlet.class);
 
-	private HttpClient httpClient = null;
+    private HttpClient httpClient = null;
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//获取参数
-		String contentUrl = request.getParameter("contentUrl");
-		if (StringUtils.isBlank(contentUrl)) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "contentUrl parameter is required.");
-		}
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //获取参数
+        String contentUrl = request.getParameter("contentUrl");
+        if (StringUtils.isBlank(contentUrl)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "contentUrl parameter is required.");
+        }
 
-		//远程访问获取内容
-		HttpEntity entity = fetchContent(contentUrl);
-		if (entity == null) {
-			response.sendError(HttpServletResponse.SC_NOT_FOUND, contentUrl + "is not found.");
-			return;
-		}
+        //远程访问获取内容
+        HttpEntity entity = fetchContent(contentUrl);
+        if (entity == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, contentUrl + "is not found.");
+            return;
+        }
 
-		//设置Header
-		response.setContentType(entity.getContentType().getValue());
-		if (entity.getContentLength() > 0) {
-			response.setContentLength((int) entity.getContentLength());
-		}
+        //设置Header
+        response.setContentType(entity.getContentType().getValue());
+        if (entity.getContentLength() > 0) {
+            response.setContentLength((int) entity.getContentLength());
+        }
 
-		//输出内容
-		InputStream input = entity.getContent();
-		OutputStream output = response.getOutputStream();
+        //输出内容
+        InputStream input = entity.getContent();
+        OutputStream output = response.getOutputStream();
 
-		try {
-			//基于byte数组读取InputStream并直接写入OutputStream, 数组默认大小为4k.
-			IOUtils.copy(input, output);
-			output.flush();
-		} finally {
-			//保证Input/Output Stream的关闭.
-			IOUtils.closeQuietly(input);
-			IOUtils.closeQuietly(output);
-		}
-	}
+        try {
+            //基于byte数组读取InputStream并直接写入OutputStream, 数组默认大小为4k.
+            IOUtils.copy(input, output);
+            output.flush();
+        } finally {
+            //保证Input/Output Stream的关闭.
+            IOUtils.closeQuietly(input);
+            IOUtils.closeQuietly(output);
+        }
+    }
 
-	/**
-	 * 使用HttpClient取得内容.
-	 */
-	private HttpEntity fetchContent(String targetUrl) {
-		HttpGet httpGet = new HttpGet(targetUrl);
-		HttpContext context = new BasicHttpContext();
-		try {
-			HttpResponse remoteResponse = httpClient.execute(httpGet, context);
-			return remoteResponse.getEntity();
-		} catch (Exception e) {
-			logger.error("fetch remote content" + targetUrl + "  error", e);
-			httpGet.abort();
-			return null;
-		}
-	}
+    /**
+     * 使用HttpClient取得内容.
+     */
+    private HttpEntity fetchContent(String targetUrl) {
+        HttpGet httpGet = new HttpGet(targetUrl);
+        HttpContext context = new BasicHttpContext();
+        try {
+            HttpResponse remoteResponse = httpClient.execute(httpGet, context);
+            return remoteResponse.getEntity();
+        } catch (Exception e) {
+            logger.error("fetch remote content" + targetUrl + "  error", e);
+            httpGet.abort();
+            return null;
+        }
+    }
 
-	/**
-	 * 创建多线程安全的HttpClient实例.
-	 */
-	@Override
-	public void init() throws ServletException {
-		// Create and initialize HTTP parameters
-		HttpParams params = new BasicHttpParams();
-		ConnManagerParams.setMaxTotalConnections(params, 50);
-		HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+    /**
+     * 创建多线程安全的HttpClient实例.
+     */
+    @Override
+    public void init() throws ServletException {
+        // Create and initialize HTTP parameters
+        HttpParams params = new BasicHttpParams();
+        ConnManagerParams.setMaxTotalConnections(params, 50);
+        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
 
-		// Create and initialize scheme registry 
-		SchemeRegistry schemeRegistry = new SchemeRegistry();
-		schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-		// Create an HttpClient with the ThreadSafeClientConnManager.
-		ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
-		httpClient = new DefaultHttpClient(cm, params);
-	}
+        // Create and initialize scheme registry
+        SchemeRegistry schemeRegistry = new SchemeRegistry();
+        schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+        // Create an HttpClient with the ThreadSafeClientConnManager.
+        ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
+        httpClient = new DefaultHttpClient(cm, params);
+    }
 
-	/**
-	 * 销毁HttpClient实例.
-	 */
-	@Override
-	public void destroy() {
-		if (httpClient != null) {
-			httpClient.getConnectionManager().shutdown();
-		}
-	}
+    /**
+     * 销毁HttpClient实例.
+     */
+    @Override
+    public void destroy() {
+        if (httpClient != null) {
+            httpClient.getConnectionManager().shutdown();
+        }
+    }
 }

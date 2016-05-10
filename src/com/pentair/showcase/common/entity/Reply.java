@@ -10,7 +10,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * 回复贴.
- * 
+ *
  * @author calvin
  */
 @Entity
@@ -18,21 +18,21 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @DiscriminatorValue("Reply")
 public class Reply extends Post {
 
-	private Subject subject;
+    private Subject subject;
 
-	//与主题的多对一关系
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "subject_id")
-	public Subject getSubject() {
-		return subject;
-	}
+    //与主题的多对一关系
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id")
+    public Subject getSubject() {
+        return subject;
+    }
 
-	public void setSubject(Subject subject) {
-		this.subject = subject;
-	}
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
 
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
 }

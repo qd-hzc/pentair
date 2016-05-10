@@ -21,196 +21,195 @@ import org.springside.modules.utils.encode.JsonBinder;
 
 /**
  * 用户管理类.
- * 
+ *
  * @author calvin
  */
 //Spring Service Bean的标识.
 @Component
 public class AccountManager {
-	private static Logger logger = LoggerFactory.getLogger(AccountManager.class);
+    private static Logger logger = LoggerFactory.getLogger(AccountManager.class);
 
-	private UserDao userDao;
+    private UserDao userDao;
 
-	private UserJdbcDao userJdbcDao;
+    private UserJdbcDao userJdbcDao;
 
-	private SpyMemcachedClient spyMemcachedClient;
+    private SpyMemcachedClient spyMemcachedClient;
 
-	private JsonBinder jsonBinder = JsonBinder.buildNonDefaultBinder();
+    private JsonBinder jsonBinder = JsonBinder.buildNonDefaultBinder();
 
-	private ServerConfig serverConfig; //系统配置
+    private ServerConfig serverConfig; //系统配置
 
-	private NotifyMessageProducer notifyProducer; //JMS消息发送
+    private NotifyMessageProducer notifyProducer; //JMS消息发送
 
-	private PasswordEncoder encoder = new ShaPasswordEncoder();
+    private PasswordEncoder encoder = new ShaPasswordEncoder();
 
-	/**
-	 * 在保存用户时,发送用户修改通知消息, 由消息接收者异步进行较为耗时的通知邮件发送.
-	 * 
-	 * 如果企图修改超级用户,取出当前操作员用户,打印其信息然后抛出异常.
-	 * 
-	 */
-	//演示指定非默认名称的TransactionManager.
-	@Transactional("defaultTransactionManager")
-	public void saveUser(User user) {
-		if (isSupervisor(user)) {
-			user.setStatus("启用");//系统管理员不管任何时候都要启用
-		}
-		String shaPassword = encoder.encodePassword(user.getPlainPassword(), null);
-		user.setShaPassword(shaPassword);
+    /**
+     * 在保存用户时,发送用户修改通知消息, 由消息接收者异步进行较为耗时的通知邮件发送.
+     * <p>
+     * 如果企图修改超级用户,取出当前操作员用户,打印其信息然后抛出异常.
+     */
+    //演示指定非默认名称的TransactionManager.
+    @Transactional("defaultTransactionManager")
+    public void saveUser(User user) {
+        if (isSupervisor(user)) {
+            user.setStatus("启用");//系统管理员不管任何时候都要启用
+        }
+        String shaPassword = encoder.encodePassword(user.getPlainPassword(), null);
+        user.setShaPassword(shaPassword);
 
-		userDao.save(user);
+        userDao.save(user);
 
-		//sendNotifyMessage(user);
-	}
+        //sendNotifyMessage(user);
+    }
 
-	@Transactional
-	public void deleteUser(User user) {
+    @Transactional
+    public void deleteUser(User user) {
 
-		if (isSupervisor(user)) {
-			logger.warn("操作员{}尝试删除系统管理员", SpringSecurityUtils.getCurrentUserName());
-			throw new ServiceException("不能删除系统管理员");
-		}
+        if (isSupervisor(user)) {
+            logger.warn("操作员{}尝试删除系统管理员", SpringSecurityUtils.getCurrentUserName());
+            throw new ServiceException("不能删除系统管理员");
+        }
 
-		userDao.delete(user);
+        userDao.delete(user);
 
-	}
-	
-	/**
-	 * 判断是否超级管理员.
-	 */
-	private boolean isSupervisor(User user) {
-		return ("1".equals(user.getId())||"admin".equals(user.getLoginName()));
-	}
+    }
 
-	@Transactional(readOnly = true)
-	public User getUser(String id) {
-		return userDao.get(id);
-	}
+    /**
+     * 判断是否超级管理员.
+     */
+    private boolean isSupervisor(User user) {
+        return ("1".equals(user.getId()) || "admin".equals(user.getLoginName()));
+    }
 
-	/**
-	 * 取得用户, 并对用户的延迟加载关联进行初始化.
-	 */
-	@Transactional(readOnly = true)
-	public User getInitedUser(String id) {
-		if (spyMemcachedClient != null) {
-			return getUserFromMemcached(id);
-		} else {
-			return userJdbcDao.queryObject(id);
-		}
-	}
+    @Transactional(readOnly = true)
+    public User getUser(String id) {
+        return userDao.get(id);
+    }
 
-	/**
-	 * 访问Memcached, 使用JSON字符串存放对象以节约空间.
-	 */
-	private User getUserFromMemcached(String id) {
+    /**
+     * 取得用户, 并对用户的延迟加载关联进行初始化.
+     */
+    @Transactional(readOnly = true)
+    public User getInitedUser(String id) {
+        if (spyMemcachedClient != null) {
+            return getUserFromMemcached(id);
+        } else {
+            return userJdbcDao.queryObject(id);
+        }
+    }
 
-		String key = MemcachedObjectType.USER.getPrefix() + id;
+    /**
+     * 访问Memcached, 使用JSON字符串存放对象以节约空间.
+     */
+    private User getUserFromMemcached(String id) {
 
-		User user = null;
-		String jsonString = spyMemcachedClient.get(key);
+        String key = MemcachedObjectType.USER.getPrefix() + id;
 
-		if (jsonString == null) {
-			//用户不在 memcached中,从数据库中取出并放入memcached.
-			//因为hibernate的proxy问题多多,此处使用jdbc
-			user = userJdbcDao.queryObject(id);
-			if (user != null) {
-				jsonString = jsonBinder.toJson(user);
-				spyMemcachedClient.set(key, MemcachedObjectType.USER.getExpiredTime(), jsonString);
-			}
-		} else {
-			user = jsonBinder.fromJson(jsonString, User.class);
-		}
-		return user;
-	}
+        User user = null;
+        String jsonString = spyMemcachedClient.get(key);
 
-	/**
-	 * 按名称查询用户, 并对用户的延迟加载关联进行初始化.
-	 */
-	@Transactional(readOnly = true)
-	public User searchLoadedUserByName(String name) {
-		User user = userDao.findUniqueBy("name", name);
-		userDao.initUser(user);
-		return user;
-	}
+        if (jsonString == null) {
+            //用户不在 memcached中,从数据库中取出并放入memcached.
+            //因为hibernate的proxy问题多多,此处使用jdbc
+            user = userJdbcDao.queryObject(id);
+            if (user != null) {
+                jsonString = jsonBinder.toJson(user);
+                spyMemcachedClient.set(key, MemcachedObjectType.USER.getExpiredTime(), jsonString);
+            }
+        } else {
+            user = jsonBinder.fromJson(jsonString, User.class);
+        }
+        return user;
+    }
 
-	/**
-	 * 取得所有用户, 预加载用户的角色.
-	 */
-	@Transactional(readOnly = true)
-	public List<User> getAllUserWithRole() {
-		List<User> list = userDao.getAllUserWithRoleByDistinctHql();
-		logger.info("get {} user sucessful.", list.size());
-		return list;
-	}
+    /**
+     * 按名称查询用户, 并对用户的延迟加载关联进行初始化.
+     */
+    @Transactional(readOnly = true)
+    public User searchLoadedUserByName(String name) {
+        User user = userDao.findUniqueBy("name", name);
+        userDao.initUser(user);
+        return user;
+    }
 
-	/**
-	 * 获取当前用户数量.
-	 */
-	@Transactional(readOnly = true)
-	public Long getUserCount() {
-		return userDao.getUserCount();
-	}
+    /**
+     * 取得所有用户, 预加载用户的角色.
+     */
+    @Transactional(readOnly = true)
+    public List<User> getAllUserWithRole() {
+        List<User> list = userDao.getAllUserWithRoleByDistinctHql();
+        logger.info("get {} user sucessful.", list.size());
+        return list;
+    }
 
-	@Transactional(readOnly = true)
-	public User findUserByLoginName(String loginName) {
-		return userDao.findUniqueBy("loginName", loginName);
-	}
-	
-	/**
-	 * 检查用户名是否唯一.
-	 *
-	 * @return loginName在数据库中唯一或等于oldLoginName时返回true.
-	 */
-	@Transactional(readOnly = true)
-	public boolean isLoginNameUnique(String newLoginName, String oldLoginName) {
-		return userDao.isPropertyUnique("loginName", newLoginName, oldLoginName);
-	}
+    /**
+     * 获取当前用户数量.
+     */
+    @Transactional(readOnly = true)
+    public Long getUserCount() {
+        return userDao.getUserCount();
+    }
 
-	/**
-	 * 批量修改用户状态.
-	 */
-	public void disableUsers(List<String> ids) {
-		userDao.disableUsers(ids);
-	}
+    @Transactional(readOnly = true)
+    public User findUserByLoginName(String loginName) {
+        return userDao.findUniqueBy("loginName", loginName);
+    }
 
-	/**
-	 * 发送用户变更消息.
-	 * 
-	 * 同时发送只有一个消费者的Queue消息与发布订阅模式有多个消费者的Topic消息.
-	 */
-	private void sendNotifyMessage(User user) {
-		if (serverConfig != null && serverConfig.isNotificationMailEnabled() && notifyProducer != null) {
-			try {
-				notifyProducer.sendQueue(user);
-				notifyProducer.sendTopic(user);
-			} catch (Exception e) {
-				logger.error("消息发送失败", e);
-			}
-		}
-	}
+    /**
+     * 检查用户名是否唯一.
+     *
+     * @return loginName在数据库中唯一或等于oldLoginName时返回true.
+     */
+    @Transactional(readOnly = true)
+    public boolean isLoginNameUnique(String newLoginName, String oldLoginName) {
+        return userDao.isPropertyUnique("loginName", newLoginName, oldLoginName);
+    }
 
-	@Autowired
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
+    /**
+     * 批量修改用户状态.
+     */
+    public void disableUsers(List<String> ids) {
+        userDao.disableUsers(ids);
+    }
 
-	@Autowired
-	public void setUserJdbcDao(UserJdbcDao userJdbcDao) {
-		this.userJdbcDao = userJdbcDao;
-	}
+    /**
+     * 发送用户变更消息.
+     * <p>
+     * 同时发送只有一个消费者的Queue消息与发布订阅模式有多个消费者的Topic消息.
+     */
+    private void sendNotifyMessage(User user) {
+        if (serverConfig != null && serverConfig.isNotificationMailEnabled() && notifyProducer != null) {
+            try {
+                notifyProducer.sendQueue(user);
+                notifyProducer.sendTopic(user);
+            } catch (Exception e) {
+                logger.error("消息发送失败", e);
+            }
+        }
+    }
 
-	@Autowired(required = false)
-	public void setServerConfig(ServerConfig serverConfig) {
-		this.serverConfig = serverConfig;
-	}
+    @Autowired
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
-	@Autowired(required = false)
-	public void setNotifyProducer(NotifyMessageProducer notifyProducer) {
-		this.notifyProducer = notifyProducer;
-	}
+    @Autowired
+    public void setUserJdbcDao(UserJdbcDao userJdbcDao) {
+        this.userJdbcDao = userJdbcDao;
+    }
 
-	@Autowired(required = false)
-	public void setSpyMemcachedClient(SpyMemcachedClient spyMemcachedClient) {
-		this.spyMemcachedClient = spyMemcachedClient;
-	}
+    @Autowired(required = false)
+    public void setServerConfig(ServerConfig serverConfig) {
+        this.serverConfig = serverConfig;
+    }
+
+    @Autowired(required = false)
+    public void setNotifyProducer(NotifyMessageProducer notifyProducer) {
+        this.notifyProducer = notifyProducer;
+    }
+
+    @Autowired(required = false)
+    public void setSpyMemcachedClient(SpyMemcachedClient spyMemcachedClient) {
+        this.spyMemcachedClient = spyMemcachedClient;
+    }
 }

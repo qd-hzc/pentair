@@ -19,78 +19,78 @@ import com.pentair.showcase.rfq.entity.Rfq;
 import com.pentair.showcase.rfq.entity.RfqDetail;
 
 @Namespace("/rfq")
-@InterceptorRefs( { @InterceptorRef("paramsPrepareParamsStack") })
-@Results( { @Result(name = CrudActionSupport.RELOAD, location = "productno.action", type = "redirect") })
+@InterceptorRefs({@InterceptorRef("paramsPrepareParamsStack")})
+@Results({@Result(name = CrudActionSupport.RELOAD, location = "productno.action", type = "redirect")})
 public class ExcelAction extends CrudActionSupport<RfqDetail> {
 
-	private static final long serialVersionUID = -776548819052326504L;
+    private static final long serialVersionUID = -776548819052326504L;
 
-	@Autowired
-	private RfqDetailDao rfqDetailDao;
-	
-	private Page<RfqDetail> page = new Page<RfqDetail>(Integer.MAX_VALUE);
-	
-	public RfqDetailDao getRfqDetailDao() {
-		return rfqDetailDao;
-	}
+    @Autowired
+    private RfqDetailDao rfqDetailDao;
 
-	public void setRfqDetailDao(RfqDetailDao rfqDetailDao) {
-		this.rfqDetailDao = rfqDetailDao;
-	}
+    private Page<RfqDetail> page = new Page<RfqDetail>(Integer.MAX_VALUE);
 
-	@Override
-	public RfqDetail getModel() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public RfqDetailDao getRfqDetailDao() {
+        return rfqDetailDao;
+    }
 
-	@Override
-	public String list() throws Exception {
-		List<PropertyFilter> filters = new ArrayList<PropertyFilter>();
-		PropertyFilter filter=new PropertyFilter("LIKES_productNo", "_________________");
-		filters.add(filter);
-		
-		//设置默认排序方式
-		if (!page.isOrderBySetted()) {
-			page.setOrderBy("updateTime");
-			page.setOrder(Page.DESC);
-		}
+    public void setRfqDetailDao(RfqDetailDao rfqDetailDao) {
+        this.rfqDetailDao = rfqDetailDao;
+    }
 
-		page = this.rfqDetailDao.findPage(page, filters);
-		System.out.println(page.getTotalCount());
-		return SUCCESS;
-	}
+    @Override
+    public RfqDetail getModel() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	public Page<RfqDetail> getPage() {
-		return page;
-	}
+    @Override
+    public String list() throws Exception {
+        List<PropertyFilter> filters = new ArrayList<PropertyFilter>();
+        PropertyFilter filter = new PropertyFilter("LIKES_productNo", "_________________");
+        filters.add(filter);
 
-	public void setPage(Page<RfqDetail> page) {
-		this.page = page;
-	}
+        //设置默认排序方式
+        if (!page.isOrderBySetted()) {
+            page.setOrderBy("updateTime");
+            page.setOrder(Page.DESC);
+        }
 
-	@Override
-	public String input() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        page = this.rfqDetailDao.findPage(page, filters);
+        System.out.println(page.getTotalCount());
+        return SUCCESS;
+    }
 
-	@Override
-	public String save() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public Page<RfqDetail> getPage() {
+        return page;
+    }
 
-	@Override
-	public String delete() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public void setPage(Page<RfqDetail> page) {
+        this.page = page;
+    }
 
-	@Override
-	protected void prepareModel() throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public String input() throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String save() throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String delete() throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    protected void prepareModel() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
 
 }

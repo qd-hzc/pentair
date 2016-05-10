@@ -11,29 +11,29 @@ import org.springside.modules.test.utils.SeleniumUtils;
 
 /**
  * 测试Ajax Mashup.
- * 
+ *
  * @calvin
  */
 public class AjaxTest extends BaseFunctionalTestCase {
 
-	@BeforeClass
-	public static void startWebDriver() throws Exception {
-		createWebDriver();
-	}
+    @BeforeClass
+    public static void startWebDriver() throws Exception {
+        createWebDriver();
+    }
 
-	@AfterClass
-	public static void stopWebDriver() {
-		driver.close();
-	}
+    @AfterClass
+    public static void stopWebDriver() {
+        driver.close();
+    }
 
-	@Test
-	public void mashup() {
-		driver.get(BASE_URL);
-		driver.findElement(By.linkText("Ajax演示")).click();
-		driver.findElement(By.linkText("跨域Mashup演示")).click();
+    @Test
+    public void mashup() {
+        driver.get(BASE_URL);
+        driver.findElement(By.linkText("Ajax演示")).click();
+        driver.findElement(By.linkText("跨域Mashup演示")).click();
 
-		driver.findElement(By.xpath("//input[@value='获取内容']")).click();
-		SeleniumUtils.waitForDisplay(driver.findElement(By.id("mashupContent")), 5000);
-		assertTrue(SeleniumUtils.isTextPresent(driver, "Hello World!"));
-	}
+        driver.findElement(By.xpath("//input[@value='获取内容']")).click();
+        SeleniumUtils.waitForDisplay(driver.findElement(By.id("mashupContent")), 5000);
+        assertTrue(SeleniumUtils.isTextPresent(driver, "Hello World!"));
+    }
 }

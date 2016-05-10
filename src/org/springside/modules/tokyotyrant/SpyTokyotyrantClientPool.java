@@ -1,8 +1,8 @@
 /**
  * Copyright (c) 2005-2010 springside.org.cn
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
- * 
+ * <p>
  * $Id: SpyTokyotyrantClientPool.java 1211 2010-09-10 16:20:45Z calvinxiu $
  */
 package org.springside.modules.tokyotyrant;
@@ -27,91 +27,91 @@ import org.springframework.beans.factory.InitializingBean;
 
 /**
  * 对SpyMemcached Client的二次封装.
- * 
+ *
  * 1.建立SpyMemcached Client池,负责初始化与关闭.
  * 2.提供常用的Get/GetBulk/Set/Delete/Incr/Decr函数的封装.
- * 
+ *
  * 未提供封装的函数可直接调用getClient()取出Spy的原版MemcachedClient来使用.
- * 
+ *
  * @author calvin
  */
 public class SpyTokyotyrantClientPool implements InitializingBean, DisposableBean {
 
-	private static Logger logger = LoggerFactory.getLogger(SpyTokyotyrantClientPool.class);
+    private static Logger logger = LoggerFactory.getLogger(SpyTokyotyrantClientPool.class);
 
-	private List<SpyTokyotyrantClient> clientPool;
+    private List<SpyTokyotyrantClient> clientPool;
 
-	private int poolSize = 1;
+    private int poolSize = 1;
 
-	private Random random = new Random();
+    private Random random = new Random();
 
-	private String memcachedNodes = "localhost:11211";
+    private String memcachedNodes = "localhost:11211";
 
-	private boolean isConsistentHashing = false;
+    private boolean isConsistentHashing = false;
 
-	private long operationTimeout = 1000; //default value in Spy is 1000ms
+    private long operationTimeout = 1000; //default value in Spy is 1000ms
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		clientPool = new ArrayList<SpyTokyotyrantClient>(poolSize);
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        clientPool = new ArrayList<SpyTokyotyrantClient>(poolSize);
 
-		for (int i = 0; i < poolSize; i++) {
-			ConnectionFactoryBuilder cfb = new ConnectionFactoryBuilder();
+        for (int i = 0; i < poolSize; i++) {
+            ConnectionFactoryBuilder cfb = new ConnectionFactoryBuilder();
 
-			cfb.setFailureMode(FailureMode.Redistribute);
-			cfb.setDaemon(true);
-			cfb.setProtocol(Protocol.TEXT);
+            cfb.setFailureMode(FailureMode.Redistribute);
+            cfb.setDaemon(true);
+            cfb.setProtocol(Protocol.TEXT);
 
-			if (isConsistentHashing) {
-				cfb.setLocatorType(Locator.CONSISTENT);
-				cfb.setHashAlg(HashAlgorithm.KETAMA_HASH);
-			}
+            if (isConsistentHashing) {
+                cfb.setLocatorType(Locator.CONSISTENT);
+                cfb.setHashAlg(HashAlgorithm.KETAMA_HASH);
+            }
 
-			cfb.setOpTimeout(operationTimeout);
+            cfb.setOpTimeout(operationTimeout);
 
-			try {
-				MemcachedClient spyClient = new MemcachedClient(cfb.build(), AddrUtil.getAddresses(memcachedNodes));
-				clientPool.add(new SpyTokyotyrantClient(spyClient));
-			} catch (IOException e) {
-				logger.error("MemcachedClient initilization error: ", e);
-				throw e;
-			}
-		}
-	}
+            try {
+                MemcachedClient spyClient = new MemcachedClient(cfb.build(), AddrUtil.getAddresses(memcachedNodes));
+                clientPool.add(new SpyTokyotyrantClient(spyClient));
+            } catch (IOException e) {
+                logger.error("MemcachedClient initilization error: ", e);
+                throw e;
+            }
+        }
+    }
 
-	@Override
-	public void destroy() throws Exception {
-		for (SpyTokyotyrantClient spyClient : clientPool) {
-			if (spyClient != null) {
-				spyClient.getMemcachedClient().shutdown();
-			}
-		}
-	}
+    @Override
+    public void destroy() throws Exception {
+        for (SpyTokyotyrantClient spyClient : clientPool) {
+            if (spyClient != null) {
+                spyClient.getMemcachedClient().shutdown();
+            }
+        }
+    }
 
-	/**
-	 * 随机取出Pool中的SpyMemcached Client.
-	 */
-	public SpyTokyotyrantClient getClient() {
-		return clientPool.get(random.nextInt(poolSize));
-	}
+    /**
+     * 随机取出Pool中的SpyMemcached Client.
+     */
+    public SpyTokyotyrantClient getClient() {
+        return clientPool.get(random.nextInt(poolSize));
+    }
 
-	public void setPoolSize(int poolSize) {
-		this.poolSize = poolSize;
-	}
+    public void setPoolSize(int poolSize) {
+        this.poolSize = poolSize;
+    }
 
-	/**
-	 *  支持多节点, 以","分割.
-	 *  eg. "localhost:11211,localhost:11212"
-	 */
-	public void setMemcachedNodes(String memcachedNodes) {
-		this.memcachedNodes = memcachedNodes;
-	}
+    /**
+     *  支持多节点, 以","分割.
+     *  eg. "localhost:11211,localhost:11212"
+     */
+    public void setMemcachedNodes(String memcachedNodes) {
+        this.memcachedNodes = memcachedNodes;
+    }
 
-	public void setConsistentHashing(boolean isConsistentHashing) {
-		this.isConsistentHashing = isConsistentHashing;
-	}
+    public void setConsistentHashing(boolean isConsistentHashing) {
+        this.isConsistentHashing = isConsistentHashing;
+    }
 
-	public void setOperationTimeout(long operationTimeout) {
-		this.operationTimeout = operationTimeout;
-	}
+    public void setOperationTimeout(long operationTimeout) {
+        this.operationTimeout = operationTimeout;
+    }
 }

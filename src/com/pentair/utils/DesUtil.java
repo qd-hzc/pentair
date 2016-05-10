@@ -11,10 +11,14 @@ import javax.crypto.spec.DESKeySpec;
  * DES加密解密类.
  */
 public class DesUtil {
-    /** 加密、解密key. */
+    /**
+     * 加密、解密key.
+     */
     private static final String PASSWORD_CRYPT_KEY = "GSD2gmdf7liHHdflkdf3gm6";
 
-    /** 加密算法,可用 DES,DESede,Blowfish. */
+    /**
+     * 加密算法,可用 DES,DESede,Blowfish.
+     */
     private final static String ALGORITHM = "DES";
 
     public static void main(String[] args) throws Exception {
@@ -27,34 +31,37 @@ public class DesUtil {
 
     /**
      * 对数据进行DES加密.
+     *
      * @param data 待进行DES加密的数据
      * @return 返回经过DES加密后的数据
      */
     public final static String decrypt(String data) {
-		try{
-	        return new String(decrypt(hex2byte(data.getBytes()), PASSWORD_CRYPT_KEY.getBytes()));
-		}catch(Exception e){
-			return data;
-		}
+        try {
+            return new String(decrypt(hex2byte(data.getBytes()), PASSWORD_CRYPT_KEY.getBytes()));
+        } catch (Exception e) {
+            return data;
+        }
     }
 
     /**
      * 对用DES加密过的数据进行解密.
+     *
      * @param data DES加密数据
      * @return 返回解密后的数据
      */
     public final static String encrypt(String data) {
-		try{
-			return byte2hex(encrypt(data.getBytes(), PASSWORD_CRYPT_KEY.getBytes()));
-		}catch(Exception e){
-			return data;
-		}
+        try {
+            return byte2hex(encrypt(data.getBytes(), PASSWORD_CRYPT_KEY.getBytes()));
+        } catch (Exception e) {
+            return data;
+        }
     }
 
     /**
      * 用指定的key对数据进行DES加密.
+     *
      * @param data 待加密的数据
-     * @param key DES加密的key
+     * @param key  DES加密的key
      * @return 返回DES加密后的数据
      */
     private static byte[] encrypt(byte[] data, byte[] key) throws Exception {
@@ -77,8 +84,9 @@ public class DesUtil {
 
     /**
      * 用指定的key对数据进行DES解密.
+     *
      * @param data 待解密的数据
-     * @param key DES解密的key
+     * @param key  DES解密的key
      * @return 返回DES解密后的数据
      */
     private static byte[] decrypt(byte[] data, byte[] key) throws Exception {

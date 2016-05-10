@@ -17,140 +17,141 @@ import com.pentair.showcase.common.entity.User;
 
 /**
  * 产品系列
- * @author Jiangshilin(36811928@qq.com)
  *
+ * @author Jiangshilin(36811928@qq.com)
  */
 @Entity
 @Table(name = "CATALOG_SERIES")
 public class Series extends IdEntity {
-	private String name;//名称
-	private String code;//四班号
-	private int sn;//序列号
-	private String shortName;
-	
-	private Integer version;
-	
-	private Brand brand;//对应的品牌
+    private String name;//名称
+    private String code;//四班号
+    private int sn;//序列号
+    private String shortName;
 
-	private User ownerPM;//产品经理
-	private User ownerDM;//设计工程部经理
-	private User ownerCE;//报价工程师
+    private Integer version;
 
-	private Float targetProfit;
-	private Float discountRate;
+    private Brand brand;//对应的品牌
 
-	private List<Product> products = Lists.newArrayList();//对应的产品列表
-	
-	//Hibernate自动维护的Version字段
-	@Version
-	public Integer getVersion() {
-		return version;
-	}
+    private User ownerPM;//产品经理
+    private User ownerDM;//设计工程部经理
+    private User ownerCE;//报价工程师
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
-	
-	public String getName() {
-		return name;
-	}
+    private Float targetProfit;
+    private Float discountRate;
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getCode() {
-		return code;
-	}
+    private List<Product> products = Lists.newArrayList();//对应的产品列表
 
-	public void setCode(String code) {
-		this.code = code;
-	}
-	
-	//与用户的多对一映射
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "pm_id")
-	public User getOwnerPM() {
-		return ownerPM;
-	}
+    //Hibernate自动维护的Version字段
+    @Version
+    public Integer getVersion() {
+        return version;
+    }
 
-	public void setOwnerPM(User ownerPM) {
-		this.ownerPM = ownerPM;
-	}
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
-	//与用户的多对一映射
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "dm_id")
-	public User getOwnerDM() {
-		return ownerDM;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setOwnerDM(User ownerDM) {
-		this.ownerDM = ownerDM;
-	}
-	
-	//与用户的多对一映射
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "ce_id")
-	public User getOwnerCE() {
-		return ownerCE;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setOwnerCE(User ownerCE) {
-		this.ownerCE = ownerCE;
-	}
-	
-	//与品牌的多对一关系
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "brand_id")
-	public Brand getBrand() {
-		return brand;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public void setBrand(Brand brand) {
-		this.brand = brand;
-	}
-	
-	//与产品的一对多关系
-	@OneToMany(mappedBy = "series", fetch = FetchType.LAZY)
-	@OrderBy(value = "name")
-	public List<Product> getProducts() {
-		return products;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
+    //与用户的多对一映射
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "pm_id")
+    public User getOwnerPM() {
+        return ownerPM;
+    }
 
-	public int getSn() {
-		return sn;
-	}
+    public void setOwnerPM(User ownerPM) {
+        this.ownerPM = ownerPM;
+    }
 
-	public void setSn(int sn) {
-		this.sn = sn;
-	}
+    //与用户的多对一映射
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "dm_id")
+    public User getOwnerDM() {
+        return ownerDM;
+    }
 
-	public String getShortName() {
-		return shortName;
-	}
+    public void setOwnerDM(User ownerDM) {
+        this.ownerDM = ownerDM;
+    }
 
-	public void setShortName(String shortName) {
-		this.shortName = shortName;
-	}
+    //与用户的多对一映射
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ce_id")
+    public User getOwnerCE() {
+        return ownerCE;
+    }
 
-	public Float getTargetProfit() {
-		return targetProfit;
-	}
+    public void setOwnerCE(User ownerCE) {
+        this.ownerCE = ownerCE;
+    }
 
-	public void setTargetProfit(Float targetProfit) {
-		this.targetProfit = targetProfit;
-	}
+    //与品牌的多对一关系
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "brand_id")
+    public Brand getBrand() {
+        return brand;
+    }
 
-	public Float getDiscountRate() {
-		return discountRate;
-	}
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
 
-	public void setDiscountRate(Float discountRate) {
-		this.discountRate = discountRate;
-	}
-	
+    //与产品的一对多关系
+    @OneToMany(mappedBy = "series", fetch = FetchType.LAZY)
+    @OrderBy(value = "name")
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public int getSn() {
+        return sn;
+    }
+
+    public void setSn(int sn) {
+        this.sn = sn;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+    public Float getTargetProfit() {
+        return targetProfit;
+    }
+
+    public void setTargetProfit(Float targetProfit) {
+        this.targetProfit = targetProfit;
+    }
+
+    public Float getDiscountRate() {
+        return discountRate;
+    }
+
+    public void setDiscountRate(Float discountRate) {
+        this.discountRate = discountRate;
+    }
+
 }

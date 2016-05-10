@@ -21,47 +21,47 @@ import org.springside.modules.test.utils.DbUnitUtils;
 
 /**
  * 简单测试所有Entity类的O/R Mapping.
- *  
+ *
  * @author calvin
  */
-@ContextConfiguration(locations = { "/applicationContext-test.xml" })
+@ContextConfiguration(locations = {"/applicationContext-test.xml"})
 @TransactionConfiguration(transactionManager = "defaultTransactionManager")
 public class HibernateMappingTest extends SpringTxTestCase {
-	private static Logger logger = LoggerFactory.getLogger(HibernateMappingTest.class);
+    private static Logger logger = LoggerFactory.getLogger(HibernateMappingTest.class);
 
-	private static DataSource dataSourceHolder = null;
+    private static DataSource dataSourceHolder = null;
 
-	@Autowired
-	private SessionFactory sessionFactory;
+    @Autowired
+    private SessionFactory sessionFactory;
 
-	@Before
-	public void loadDefaultData() throws Exception {
-		if (dataSourceHolder == null) {
-			DbUnitUtils.loadData(dataSource, "/data/default-data.xml");
-			dataSourceHolder = dataSource;
-		}
-	}
+    @Before
+    public void loadDefaultData() throws Exception {
+        if (dataSourceHolder == null) {
+            DbUnitUtils.loadData(dataSource, "/data/default-data.xml");
+            dataSourceHolder = dataSource;
+        }
+    }
 
-	@AfterClass
-	public static void cleanDefaultData() throws Exception {
-		DbUnitUtils.removeData(dataSourceHolder, "/data/default-data.xml");
-	}
+    @AfterClass
+    public static void cleanDefaultData() throws Exception {
+        DbUnitUtils.removeData(dataSourceHolder, "/data/default-data.xml");
+    }
 
-	@Test
-	@SuppressWarnings("unchecked")
-	public void allClassMapping() throws Exception {
-		Session session = sessionFactory.openSession();
-		try {
-			Map metadata = sessionFactory.getAllClassMetadata();
-			for (Object o : metadata.values()) {
-				EntityPersister persister = (EntityPersister) o;
-				String className = persister.getEntityName();
-				Query q = session.createQuery("from " + className + " c");
-				q.iterate();
-				logger.debug("ok: " + className);
-			}
-		} finally {
-			session.close();
-		}
-	}
+    @Test
+    @SuppressWarnings("unchecked")
+    public void allClassMapping() throws Exception {
+        Session session = sessionFactory.openSession();
+        try {
+            Map metadata = sessionFactory.getAllClassMetadata();
+            for (Object o : metadata.values()) {
+                EntityPersister persister = (EntityPersister) o;
+                String className = persister.getEntityName();
+                Query q = session.createQuery("from " + className + " c");
+                q.iterate();
+                logger.debug("ok: " + className);
+            }
+        } finally {
+            session.close();
+        }
+    }
 }

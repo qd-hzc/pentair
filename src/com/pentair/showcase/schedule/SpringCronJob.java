@@ -20,56 +20,56 @@ import org.springside.modules.utils.ThreadUtils;
  */
 public class SpringCronJob implements Runnable {
 
-	private static Logger logger = LoggerFactory.getLogger(SpringCronJob.class);
+    private static Logger logger = LoggerFactory.getLogger(SpringCronJob.class);
 
-	private String cronExpression;
+    private String cronExpression;
 
-	private int shutdownTimeout = Integer.MAX_VALUE;
+    private int shutdownTimeout = Integer.MAX_VALUE;
 
-	private ThreadPoolTaskScheduler threadPoolTaskScheduler;
+    private ThreadPoolTaskScheduler threadPoolTaskScheduler;
 
-	private AccountManager accountManager;
+    private AccountManager accountManager;
 
-	@PostConstruct
-	public void start() {
-		Assert.hasText(cronExpression);
+    @PostConstruct
+    public void start() {
+        Assert.hasText(cronExpression);
 
-		threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
-		threadPoolTaskScheduler.setThreadNamePrefix("SpringCronJob");
-		threadPoolTaskScheduler.initialize();
+        threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
+        threadPoolTaskScheduler.setThreadNamePrefix("SpringCronJob");
+        threadPoolTaskScheduler.initialize();
 
-		threadPoolTaskScheduler.schedule(this, new CronTrigger(cronExpression));
-	}
+        threadPoolTaskScheduler.schedule(this, new CronTrigger(cronExpression));
+    }
 
-	@PreDestroy
-	public void stop() {
-		ScheduledExecutorService scheduledExecutorService = threadPoolTaskScheduler.getScheduledExecutor();
+    @PreDestroy
+    public void stop() {
+        ScheduledExecutorService scheduledExecutorService = threadPoolTaskScheduler.getScheduledExecutor();
 
-		ThreadUtils.normalShutdown(scheduledExecutorService, shutdownTimeout, TimeUnit.SECONDS);
+        ThreadUtils.normalShutdown(scheduledExecutorService, shutdownTimeout, TimeUnit.SECONDS);
 
-	}
+    }
 
-	/**
-	 * 定时打印当前用户数到日志.
-	 */
-	public void run() {
-		long userCount = accountManager.getUserCount();
-		logger.info("There are {} user in database.", userCount);
-	}
+    /**
+     * 定时打印当前用户数到日志.
+     */
+    public void run() {
+        long userCount = accountManager.getUserCount();
+        logger.info("There are {} user in database.", userCount);
+    }
 
-	public void setCronExpression(String cronExpression) {
-		this.cronExpression = cronExpression;
-	}
+    public void setCronExpression(String cronExpression) {
+        this.cronExpression = cronExpression;
+    }
 
-	/**
-	 * 设置gracefulShutdown的等待时间,单位秒.
-	 */
-	public void setShutdownTimeout(int shutdownTimeout) {
-		this.shutdownTimeout = shutdownTimeout;
-	}
+    /**
+     * 设置gracefulShutdown的等待时间,单位秒.
+     */
+    public void setShutdownTimeout(int shutdownTimeout) {
+        this.shutdownTimeout = shutdownTimeout;
+    }
 
-	@Autowired
-	public void setAccountManager(AccountManager accountManager) {
-		this.accountManager = accountManager;
-	}
+    @Autowired
+    public void setAccountManager(AccountManager accountManager) {
+        this.accountManager = accountManager;
+    }
 }

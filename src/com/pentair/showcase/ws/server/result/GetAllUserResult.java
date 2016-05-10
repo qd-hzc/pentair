@@ -12,21 +12,21 @@ import com.pentair.showcase.ws.server.dto.UserDTO;
 
 /**
  * GetAllUser方法的返回结果类型.
- * 
+ *
  * @author calvin
  */
 @XmlType(name = "GetAllUserResult", namespace = WsConstants.NS)
 public class GetAllUserResult extends WSResult implements Serializable {
-	private static final long serialVersionUID = 4739558570080898049L;
-	private List<UserDTO> userList;
+    private static final long serialVersionUID = 4739558570080898049L;
+    private List<UserDTO> userList;
 
-	@XmlElementWrapper(name = "userList")
-	@XmlElement(name = "user")
-	public List<UserDTO> getUserList() {
-		return userList;
-	}
+    @XmlElementWrapper(name = "userList")
+    @XmlElement(name = "user")
+    public List<UserDTO> getUserList() {
+        return userList;
+    }
 
-	public void setUserList(List<UserDTO> userList) {
-		this.userList = userList;
-	}
+    public void setUserList(List<UserDTO> userList) {
+        this.userList = userList;
+    }
 }

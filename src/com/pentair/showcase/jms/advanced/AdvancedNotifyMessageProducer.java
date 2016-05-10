@@ -12,52 +12,52 @@ import com.pentair.showcase.common.entity.User;
 
 /**
  * JMS用户变更消息生产者.
- * 
+ * <p>
  * 使用jmsTemplate将用户变更消息分别发送到queue与topic.
- * 
+ *
  * @author calvin
  */
 public class AdvancedNotifyMessageProducer {
 
-	private JmsTemplate jmsTemplate;
-	private Destination notifyQueue;
-	private Destination notifyTopic;
+    private JmsTemplate jmsTemplate;
+    private Destination notifyQueue;
+    private Destination notifyTopic;
 
-	public void sendQueue(final User user) {
-		sendMessage(user, notifyQueue);
-	}
+    public void sendQueue(final User user) {
+        sendMessage(user, notifyQueue);
+    }
 
-	public void sendTopic(final User user) {
-		sendMessage(user, notifyTopic);
-	}
+    public void sendTopic(final User user) {
+        sendMessage(user, notifyTopic);
+    }
 
-	/**
-	 * 使用jmsTemplate的send/MessageCreator()发送Map类型的消息并在Message中附加属性用于消息过滤.
-	 */
-	private void sendMessage(final User user, Destination destination) {
-		jmsTemplate.send(destination, new MessageCreator() {
-			public Message createMessage(Session session) throws JMSException {
+    /**
+     * 使用jmsTemplate的send/MessageCreator()发送Map类型的消息并在Message中附加属性用于消息过滤.
+     */
+    private void sendMessage(final User user, Destination destination) {
+        jmsTemplate.send(destination, new MessageCreator() {
+            public Message createMessage(Session session) throws JMSException {
 
-				MapMessage message = session.createMapMessage();
-				message.setString("userName", user.getName());
-				message.setString("email", user.getEmail());
+                MapMessage message = session.createMapMessage();
+                message.setString("userName", user.getName());
+                message.setString("email", user.getEmail());
 
-				message.setStringProperty("objectType", "user");
+                message.setStringProperty("objectType", "user");
 
-				return message;
-			}
-		});
-	}
+                return message;
+            }
+        });
+    }
 
-	public void setJmsTemplate(JmsTemplate jmsTemplate) {
-		this.jmsTemplate = jmsTemplate;
-	}
+    public void setJmsTemplate(JmsTemplate jmsTemplate) {
+        this.jmsTemplate = jmsTemplate;
+    }
 
-	public void setNotifyQueue(Destination notifyQueue) {
-		this.notifyQueue = notifyQueue;
-	}
+    public void setNotifyQueue(Destination notifyQueue) {
+        this.notifyQueue = notifyQueue;
+    }
 
-	public void setNotifyTopic(Destination nodifyTopic) {
-		this.notifyTopic = nodifyTopic;
-	}
+    public void setNotifyTopic(Destination nodifyTopic) {
+        this.notifyTopic = nodifyTopic;
+    }
 }

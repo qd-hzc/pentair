@@ -23,111 +23,111 @@ import org.springside.modules.test.utils.DbUnitUtils;
 
 /**
  * PostDao的集成测试用例,测试ORM映射及特殊的DAO操作.
- * 
+ *
  * @author calvin
  */
-@ContextConfiguration(locations = { "/applicationContext-test.xml" })
+@ContextConfiguration(locations = {"/applicationContext-test.xml"})
 @TransactionConfiguration(transactionManager = "defaultTransactionManager")
 public class PostDaoTest extends SpringTxTestCase {
 
-	private static DataSource dataSourceHolder = null;
+    private static DataSource dataSourceHolder = null;
 
-	@Autowired
-	private SubjectDao subjectDao;
-	@Autowired
-	private ReplyDao replyDao;
-	@Autowired
-	private UserDao userDao;
+    @Autowired
+    private SubjectDao subjectDao;
+    @Autowired
+    private ReplyDao replyDao;
+    @Autowired
+    private UserDao userDao;
 
-	@Before
-	public void loadDefaultData() throws Exception {
-		if (dataSourceHolder == null) {
-			DbUnitUtils.loadData(dataSource, "/data/default-data.xml");
-			dataSourceHolder = dataSource;
-		}
-	}
+    @Before
+    public void loadDefaultData() throws Exception {
+        if (dataSourceHolder == null) {
+            DbUnitUtils.loadData(dataSource, "/data/default-data.xml");
+            dataSourceHolder = dataSource;
+        }
+    }
 
-	@AfterClass
-	public static void cleanDefaultData() throws Exception {
-		DbUnitUtils.removeData(dataSourceHolder, "/data/default-data.xml");
-	}
+    @AfterClass
+    public static void cleanDefaultData() throws Exception {
+        DbUnitUtils.removeData(dataSourceHolder, "/data/default-data.xml");
+    }
 
-	@Test
-	public void getSubjectDetail() {
-		Subject subject = subjectDao.getDetailWithReply("1");
-		subjectDao.getSession().evict(subject);
+    @Test
+    public void getSubjectDetail() {
+        Subject subject = subjectDao.getDetailWithReply("1");
+        subjectDao.getSession().evict(subject);
 
-		assertEquals(1, subject.getReplyList().size());
-		assertEquals("Hello World!!", subject.getContent());
-		assertEquals("Good Morning!!", subject.getReplyList().get(0).getContent());
-	}
+        assertEquals(1, subject.getReplyList().size());
+        assertEquals("Hello World!!", subject.getContent());
+        assertEquals("Good Morning!!", subject.getReplyList().get(0).getContent());
+    }
 
-	@Test
-	public void createSubject() {
-		Subject subject = new Subject();
-		subject.setTitle("Good Night");
-		subject.setContent("Good Night!!");
-		subject.setModifyTime(new Date());
+    @Test
+    public void createSubject() {
+        Subject subject = new Subject();
+        subject.setTitle("Good Night");
+        subject.setContent("Good Night!!");
+        subject.setModifyTime(new Date());
 
-		User user = userDao.get("1");
-		subject.setUser(user);
+        User user = userDao.get("1");
+        subject.setUser(user);
 
-		subjectDao.save(subject);
-		subjectDao.flush();
-		subject = subjectDao.getDetail(subject.getId());
-		assertEquals("Good Night!!", subject.getContent());
-	}
+        subjectDao.save(subject);
+        subjectDao.flush();
+        subject = subjectDao.getDetail(subject.getId());
+        assertEquals("Good Night!!", subject.getContent());
+    }
 
-	@Test
-	public void updateSubject() {
-		Subject subject = subjectDao.getDetail("1");
-		subject.setTitle("Good Afternoon");
-		subject.setContent("Good Afternoon!!!");
-		subject.setModifyTime(new Date());
+    @Test
+    public void updateSubject() {
+        Subject subject = subjectDao.getDetail("1");
+        subject.setTitle("Good Afternoon");
+        subject.setContent("Good Afternoon!!!");
+        subject.setModifyTime(new Date());
 
-		subjectDao.save(subject);
-		subjectDao.flush();
-		subject = subjectDao.getDetail(subject.getId());
-		assertEquals("Good Afternoon!!!", subject.getContent());
-	}
+        subjectDao.save(subject);
+        subjectDao.flush();
+        subject = subjectDao.getDetail(subject.getId());
+        assertEquals("Good Afternoon!!!", subject.getContent());
+    }
 
-	@Test
-	public void deleteSubject() {
-		subjectDao.delete("1");
-		subjectDao.flush();
-		Subject subject = subjectDao.findUniqueBy("id", "1");
-		assertNull(subject);
-	}
+    @Test
+    public void deleteSubject() {
+        subjectDao.delete("1");
+        subjectDao.flush();
+        Subject subject = subjectDao.findUniqueBy("id", "1");
+        assertNull(subject);
+    }
 
-	@Test
-	public void createReply() {
-		Reply reply = new Reply();
-		reply.setTitle("GoodAfternoon");
-		reply.setContent("Good Afternoon!!!");
-		reply.setModifyTime(new Date());
+    @Test
+    public void createReply() {
+        Reply reply = new Reply();
+        reply.setTitle("GoodAfternoon");
+        reply.setContent("Good Afternoon!!!");
+        reply.setModifyTime(new Date());
 
-		User user = userDao.get("1");
-		reply.setUser(user);
+        User user = userDao.get("1");
+        reply.setUser(user);
 
-		Subject subject = subjectDao.get("1");
-		reply.setSubject(subject);
+        Subject subject = subjectDao.get("1");
+        reply.setSubject(subject);
 
-		replyDao.save(reply);
-		replyDao.flush();
-	}
+        replyDao.save(reply);
+        replyDao.flush();
+    }
 
-	@Test
-	public void updateReply() {
-		Reply reply = replyDao.getDetail("2");
-		reply.setTitle("GoodEvening");
-		reply.setContent("Good Evening!!!");
+    @Test
+    public void updateReply() {
+        Reply reply = replyDao.getDetail("2");
+        reply.setTitle("GoodEvening");
+        reply.setContent("Good Evening!!!");
 
-		replyDao.save(reply);
-		replyDao.flush();
-	}
+        replyDao.save(reply);
+        replyDao.flush();
+    }
 
-	@Test
-	public void deleteReply() {
-		replyDao.delete("2");
-	}
+    @Test
+    public void deleteReply() {
+        replyDao.delete("2");
+    }
 }

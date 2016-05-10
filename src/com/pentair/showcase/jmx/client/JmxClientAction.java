@@ -13,107 +13,109 @@ import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * JMX客户端演示的Action.
- * 
+ *
  * @author ben
  * @author calvin
  */
 @Namespace("/jmx")
 public class JmxClientAction extends ActionSupport {
 
-	private static final long serialVersionUID = -12923147736849709L;
+    private static final long serialVersionUID = -12923147736849709L;
 
-	private static Logger logger = LoggerFactory.getLogger(JmxClientAction.class);
+    private static Logger logger = LoggerFactory.getLogger(JmxClientAction.class);
 
-	@Autowired
-	private JmxClientService jmxClientService;
+    @Autowired
+    private JmxClientService jmxClientService;
 
-	//-- 页面属性 --//
-	private String nodeName;
-	private boolean notificationMailEnabled;
-	private boolean traceStarted;
+    //-- 页面属性 --//
+    private String nodeName;
+    private boolean notificationMailEnabled;
+    private boolean traceStarted;
 
-	/**
-	 * 默认函数,显示服务器配置及运行情况.
-	 */
-	@Override
-	public String execute() {
-		nodeName = jmxClientService.getNodeName();
-		notificationMailEnabled = jmxClientService.isNotificationMailEnabled();
-		traceStarted = jmxClientService.getTraceStatus();
-		return SUCCESS;
-	}
+    /**
+     * 默认函数,显示服务器配置及运行情况.
+     */
+    @Override
+    public String execute() {
+        nodeName = jmxClientService.getNodeName();
+        notificationMailEnabled = jmxClientService.isNotificationMailEnabled();
+        traceStarted = jmxClientService.getTraceStatus();
+        return SUCCESS;
+    }
 
-	//-- 系统配置 (基于MBean) --//
-	/**
-	 * 修改系统配置的Ajax请求.
-	 */
-	public String saveConfig() {
-		try {
-			jmxClientService.setNodeName(nodeName);
-			jmxClientService.setNotificationMailEnabled(notificationMailEnabled);
-			Struts2Utils.renderText("保存配置成功.");
-		} catch (Exception e) {
-			Struts2Utils.renderText("保存配置失败.");
-			logger.error("保存配置失败.", e);
-		}
-		return null;
-	}
+    //-- 系统配置 (基于MBean) --//
 
-	/**
-	 * 获取最新系统配置, 返回JSON字符串.
-	 */
-	@SuppressWarnings("unchecked")
-	public String refreshConfig() {
-		Map map = new HashMap();
-		try {
-			nodeName = jmxClientService.getNodeName();
-			notificationMailEnabled = jmxClientService.isNotificationMailEnabled();
+    /**
+     * 修改系统配置的Ajax请求.
+     */
+    public String saveConfig() {
+        try {
+            jmxClientService.setNodeName(nodeName);
+            jmxClientService.setNotificationMailEnabled(notificationMailEnabled);
+            Struts2Utils.renderText("保存配置成功.");
+        } catch (Exception e) {
+            Struts2Utils.renderText("保存配置失败.");
+            logger.error("保存配置失败.", e);
+        }
+        return null;
+    }
 
-			map.put("nodeName", nodeName);
-			map.put("notificationMailEnabled", String.valueOf(notificationMailEnabled));
-			map.put("message", "刷新配置成功.");
-		} catch (Exception e) {
-			map.put("message", "刷新配置失败.");
-			logger.error(e.getMessage(), e);
-		}
+    /**
+     * 获取最新系统配置, 返回JSON字符串.
+     */
+    @SuppressWarnings("unchecked")
+    public String refreshConfig() {
+        Map map = new HashMap();
+        try {
+            nodeName = jmxClientService.getNodeName();
+            notificationMailEnabled = jmxClientService.isNotificationMailEnabled();
 
-		Struts2Utils.renderJson(map);
-		return null;
-	}
+            map.put("nodeName", nodeName);
+            map.put("notificationMailEnabled", String.valueOf(notificationMailEnabled));
+            map.put("message", "刷新配置成功.");
+        } catch (Exception e) {
+            map.put("message", "刷新配置失败.");
+            logger.error(e.getMessage(), e);
+        }
 
-	//-- Trace控制(直接读取属性/调用方法) --//
-	/**
-	 * 开始Trace.
-	 */
-	public void startTrace() {
-		jmxClientService.startTrace();
-	}
+        Struts2Utils.renderJson(map);
+        return null;
+    }
 
-	/**
-	 * 停止Trace.
-	 */
-	public void stopTrace() {
-		jmxClientService.stopTrace();
-	}
+    //-- Trace控制(直接读取属性/调用方法) --//
 
-	//-- 页面属性访问函数 --//
-	public String getNodeName() {
-		return nodeName;
-	}
+    /**
+     * 开始Trace.
+     */
+    public void startTrace() {
+        jmxClientService.startTrace();
+    }
 
-	public void setNodeName(String nodeName) {
-		this.nodeName = nodeName;
-	}
+    /**
+     * 停止Trace.
+     */
+    public void stopTrace() {
+        jmxClientService.stopTrace();
+    }
 
-	public boolean isNotificationMailEnabled() {
-		return notificationMailEnabled;
-	}
+    //-- 页面属性访问函数 --//
+    public String getNodeName() {
+        return nodeName;
+    }
 
-	public void setNotificationMailEnabled(boolean notificationMailEnabled) {
-		this.notificationMailEnabled = notificationMailEnabled;
-	}
+    public void setNodeName(String nodeName) {
+        this.nodeName = nodeName;
+    }
 
-	public boolean isTraceStarted() {
-		return traceStarted;
-	}
+    public boolean isNotificationMailEnabled() {
+        return notificationMailEnabled;
+    }
+
+    public void setNotificationMailEnabled(boolean notificationMailEnabled) {
+        this.notificationMailEnabled = notificationMailEnabled;
+    }
+
+    public boolean isTraceStarted() {
+        return traceStarted;
+    }
 }

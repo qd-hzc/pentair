@@ -6,7 +6,7 @@ import org.springside.modules.orm.hibernate.HibernateDao;
 
 /**
  * 角色对象的泛型Hibernate Dao.
- * 
+ *
  * @author calvin
  */
 @Component

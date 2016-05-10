@@ -12,226 +12,228 @@ import com.pentair.showcase.catalog.entity.*;
 
 /**
  * RFQ明细
- * @author Jiangshilin(36811928@qq.com)
  *
+ * @author Jiangshilin(36811928@qq.com)
  */
 @Entity
 @Table(name = "RFQ_DETAIL")
 public class RfqDetail extends IdEntity {
-	private Rfq rfq;
-	
-	private Integer version;
-	private String  sn;//四班号
-	private String  productNo;
-	public String getProductNo() {
-		return productNo;
-	}
+    private Rfq rfq;
 
-	public void setProductNo(String productNo) {
-		this.productNo = productNo;
-	}
+    private Integer version;
+    private String sn;//四班号
+    private String productNo;
 
-	private String  productName;
-	private String  competitorName;
-	private String  competitorPrice;
-	private String  expectedPrice;
-	private String  agentProfit;
-	private String  deliveryCycle;
-	private String  opportunity;
-	private String  quantityYear;
-	private String  quantityMin;
-	private String  note;
-	private String  saleAmountYear;
-	private String  snruleId;
-	
-	private Float materialCost;
-	private Float loh;
-	private Float toolingCharge;
-	private Float batch;
-	
-	private String specialPrice;
-	private String specialApprover;
-	private String deliveryWeeks;
+    public String getProductNo() {
+        return productNo;
+    }
 
-	public String getSnruleId() {
-		return snruleId;
-	}
+    public void setProductNo(String productNo) {
+        this.productNo = productNo;
+    }
 
-	public void setSnruleId(String snruleId) {
-		this.snruleId = snruleId;
-	}
+    private String productName;
+    private String competitorName;
+    private String competitorPrice;
+    private String expectedPrice;
+    private String agentProfit;
+    private String deliveryCycle;
+    private String opportunity;
+    private String quantityYear;
+    private String quantityMin;
+    private String note;
+    private String saleAmountYear;
+    private String snruleId;
 
-	public String getSaleAmountYear() {
-		return saleAmountYear;
-	}
+    private Float materialCost;
+    private Float loh;
+    private Float toolingCharge;
+    private Float batch;
 
-	public void setSaleAmountYear(String saleAmountYear) {
-		this.saleAmountYear = saleAmountYear;
-	}
+    private String specialPrice;
+    private String specialApprover;
+    private String deliveryWeeks;
 
-	public String getSn() {
-		return sn;
-	}
+    public String getSnruleId() {
+        return snruleId;
+    }
 
-	public void setSn(String sn) {
-		this.sn = sn;
-	}
-	public String getNote() {
-		return note;
-	}
+    public void setSnruleId(String snruleId) {
+        this.snruleId = snruleId;
+    }
 
-	public void setNote(String note) {
-		this.note = note;
-	}
+    public String getSaleAmountYear() {
+        return saleAmountYear;
+    }
 
-	public String getCompetitorName() {
-		return competitorName;
-	}
+    public void setSaleAmountYear(String saleAmountYear) {
+        this.saleAmountYear = saleAmountYear;
+    }
 
-	public void setCompetitorName(String competitorName) {
-		this.competitorName = competitorName;
-	}
+    public String getSn() {
+        return sn;
+    }
 
-	public String getCompetitorPrice() {
-		return competitorPrice;
-	}
+    public void setSn(String sn) {
+        this.sn = sn;
+    }
 
-	public void setCompetitorPrice(String competitorPrice) {
-		this.competitorPrice = competitorPrice;
-	}
+    public String getNote() {
+        return note;
+    }
 
-	public String getExpectedPrice() {
-		return expectedPrice;
-	}
+    public void setNote(String note) {
+        this.note = note;
+    }
 
-	public void setExpectedPrice(String expectedPrice) {
-		this.expectedPrice = expectedPrice;
-	}
+    public String getCompetitorName() {
+        return competitorName;
+    }
 
-	public String getAgentProfit() {
-		return agentProfit;
-	}
+    public void setCompetitorName(String competitorName) {
+        this.competitorName = competitorName;
+    }
 
-	public void setAgentProfit(String agentProfit) {
-		this.agentProfit = agentProfit;
-	}
+    public String getCompetitorPrice() {
+        return competitorPrice;
+    }
 
-	public String getDeliveryCycle() {
-		return deliveryCycle;
-	}
+    public void setCompetitorPrice(String competitorPrice) {
+        this.competitorPrice = competitorPrice;
+    }
 
-	public void setDeliveryCycle(String deliveryCycle) {
-		this.deliveryCycle = deliveryCycle;
-	}
+    public String getExpectedPrice() {
+        return expectedPrice;
+    }
 
-	public String getOpportunity() {
-		return opportunity;
-	}
+    public void setExpectedPrice(String expectedPrice) {
+        this.expectedPrice = expectedPrice;
+    }
 
-	public void setOpportunity(String opportunity) {
-		this.opportunity = opportunity;
-	}
+    public String getAgentProfit() {
+        return agentProfit;
+    }
 
-	public String getQuantityYear() {
-		return quantityYear;
-	}
+    public void setAgentProfit(String agentProfit) {
+        this.agentProfit = agentProfit;
+    }
 
-	public void setQuantityYear(String quantityYear) {
-		this.quantityYear = quantityYear;
-	}
+    public String getDeliveryCycle() {
+        return deliveryCycle;
+    }
 
-	public String getQuantityMin() {
-		return quantityMin;
-	}
+    public void setDeliveryCycle(String deliveryCycle) {
+        this.deliveryCycle = deliveryCycle;
+    }
 
-	public void setQuantityMin(String quantityMin) {
-		this.quantityMin = quantityMin;
-	}
+    public String getOpportunity() {
+        return opportunity;
+    }
 
-	@Version
-	public Integer getVersion() {
-		return version;
-	}
-	
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
-	
-	//与RFQ的多对一关系
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "rfq_id")
-	public Rfq getRfq() {
-		return rfq;
-	}
-	
-	public void setRfq(Rfq rfq) {
-		this.rfq = rfq;
-	}
+    public void setOpportunity(String opportunity) {
+        this.opportunity = opportunity;
+    }
 
-	public String getProductName() {
-		return productName;
-	}
+    public String getQuantityYear() {
+        return quantityYear;
+    }
 
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
+    public void setQuantityYear(String quantityYear) {
+        this.quantityYear = quantityYear;
+    }
 
-	public Float getMaterialCost() {
-		return materialCost;
-	}
+    public String getQuantityMin() {
+        return quantityMin;
+    }
 
-	public void setMaterialCost(Float materialCost) {
-		this.materialCost = materialCost;
-	}
+    public void setQuantityMin(String quantityMin) {
+        this.quantityMin = quantityMin;
+    }
 
-	public Float getLoh() {
-		return loh;
-	}
+    @Version
+    public Integer getVersion() {
+        return version;
+    }
 
-	public void setLoh(Float loh) {
-		this.loh = loh;
-	}
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
-	public Float getToolingCharge() {
-		return toolingCharge;
-	}
+    //与RFQ的多对一关系
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rfq_id")
+    public Rfq getRfq() {
+        return rfq;
+    }
 
-	public void setToolingCharge(Float toolingCharge) {
-		this.toolingCharge = toolingCharge;
-	}
+    public void setRfq(Rfq rfq) {
+        this.rfq = rfq;
+    }
 
-	public Float getBatch() {
-		return batch;
-	}
+    public String getProductName() {
+        return productName;
+    }
 
-	public void setBatch(Float batch) {
-		this.batch = batch;
-	}
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
 
-	public String getDeliveryWeeks() {
-		return deliveryWeeks;
-	}
+    public Float getMaterialCost() {
+        return materialCost;
+    }
 
-	public void setDeliveryWeeks(String deliveryWeeks) {
-		this.deliveryWeeks = deliveryWeeks;
-	}
+    public void setMaterialCost(Float materialCost) {
+        this.materialCost = materialCost;
+    }
 
-	public String getSpecialPrice() {
-		return specialPrice;
-	}
+    public Float getLoh() {
+        return loh;
+    }
 
-	public void setSpecialPrice(String specialPrice) {
-		this.specialPrice = specialPrice;
-	}
+    public void setLoh(Float loh) {
+        this.loh = loh;
+    }
 
-	public String getSpecialApprover() {
-		return specialApprover;
-	}
+    public Float getToolingCharge() {
+        return toolingCharge;
+    }
 
-	public void setSpecialApprover(String specialApprover) {
-		this.specialApprover = specialApprover;
-	}
-	
+    public void setToolingCharge(Float toolingCharge) {
+        this.toolingCharge = toolingCharge;
+    }
+
+    public Float getBatch() {
+        return batch;
+    }
+
+    public void setBatch(Float batch) {
+        this.batch = batch;
+    }
+
+    public String getDeliveryWeeks() {
+        return deliveryWeeks;
+    }
+
+    public void setDeliveryWeeks(String deliveryWeeks) {
+        this.deliveryWeeks = deliveryWeeks;
+    }
+
+    public String getSpecialPrice() {
+        return specialPrice;
+    }
+
+    public void setSpecialPrice(String specialPrice) {
+        this.specialPrice = specialPrice;
+    }
+
+    public String getSpecialApprover() {
+        return specialApprover;
+    }
+
+    public void setSpecialApprover(String specialApprover) {
+        this.specialApprover = specialApprover;
+    }
+
 	/*
 	public String getSpecialClassName() {
 		if(specialPrice == null || specialPrice.trim().length() == 0) {

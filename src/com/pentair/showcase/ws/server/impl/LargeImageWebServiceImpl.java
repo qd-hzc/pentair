@@ -20,44 +20,43 @@ import com.pentair.showcase.ws.server.result.WSResult;
 
 /**
  * LargeImageWebService服务端实现类.
- * 
+ * <p>
  * 客户端实现见功能测试用例.
- * 
- * @see LargeImageWebService
- * 
+ *
  * @author calvin
+ * @see LargeImageWebService
  */
 @WebService(serviceName = "LargeImageService", portName = "LargeImageServicePort", endpointInterface = "com.pentair.showcase.ws.server.LargeImageWebService", targetNamespace = WsConstants.NS)
 public class LargeImageWebServiceImpl implements LargeImageWebService, ApplicationContextAware {
 
-	private static Logger logger = LoggerFactory.getLogger(LargeImageWebServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(LargeImageWebServiceImpl.class);
 
-	private ApplicationContext applicationContext;
+    private ApplicationContext applicationContext;
 
-	/**
-	 * @see LargeImageWebService#getImage()
-	 */
-	public LargeImageResult getImage() {
+    /**
+     * @see LargeImageWebService#getImage()
+     */
+    public LargeImageResult getImage() {
 
-		try {
-			//采用applicationContext获取Web应用中的文件.
-			File image = applicationContext.getResource("/img/logo.jpg").getFile();
+        try {
+            //采用applicationContext获取Web应用中的文件.
+            File image = applicationContext.getResource("/img/logo.jpg").getFile();
 
-			//采用activation的DataHandler实现Streaming传输.
-			DataSource dataSource = new FileDataSource(image);
-			DataHandler dataHandler = new DataHandler(dataSource);
+            //采用activation的DataHandler实现Streaming传输.
+            DataSource dataSource = new FileDataSource(image);
+            DataHandler dataHandler = new DataHandler(dataSource);
 
-			LargeImageResult result = new LargeImageResult();
-			result.setImageData(dataHandler);
-			return result;
-		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
-			return WSResult.buildResult(LargeImageResult.class, WSResult.IMAGE_ERROR, "Image reading error.");
-		}
+            LargeImageResult result = new LargeImageResult();
+            result.setImageData(dataHandler);
+            return result;
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+            return WSResult.buildResult(LargeImageResult.class, WSResult.IMAGE_ERROR, "Image reading error.");
+        }
 
-	}
+    }
 
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-	}
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 }

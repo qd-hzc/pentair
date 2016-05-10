@@ -17,44 +17,44 @@ import org.springside.modules.security.springsecurity.SpringSecurityUtils;
 
 /**
  * 自动以默认用户名登录的filter, 用于开发时不需要每次进入登录页面.
- * 
+ *
  * @author kevin@ericsson.com
  */
 public class AutoLoginFilter extends GenericFilterBean {
 
-	private UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
-	private boolean enabled = false;
+    private boolean enabled = false;
 
-	private String defaultUserName;
+    private String defaultUserName;
 
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
-			ServletException {
-		//如果被激活且当前用户未登录则进行登录
-		if (enabled && SpringSecurityUtils.getCurrentUser() == null) {
-			UserDetails userDetails = userDetailsService.loadUserByUsername(defaultUserName);
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+            ServletException {
+        //如果被激活且当前用户未登录则进行登录
+        if (enabled && SpringSecurityUtils.getCurrentUser() == null) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(defaultUserName);
 
-			if (userDetails == null) {
-				throw new RuntimeException("默认用户" + defaultUserName + "不存在");
-			}
+            if (userDetails == null) {
+                throw new RuntimeException("默认用户" + defaultUserName + "不存在");
+            }
 
-			SpringSecurityUtils.saveUserDetailsToContext(userDetails, (HttpServletRequest) request);
-		}
+            SpringSecurityUtils.saveUserDetailsToContext(userDetails, (HttpServletRequest) request);
+        }
 
-		chain.doFilter(request, response);
-	}
+        chain.doFilter(request, response);
+    }
 
-	@Autowired
-	public void setUserDetailsService(UserDetailsService userDetailsService) {
-		this.userDetailsService = userDetailsService;
-	}
+    @Autowired
+    public void setUserDetailsService(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	@Required
-	public void setDefaultUserName(String defaultUserName) {
-		this.defaultUserName = defaultUserName;
-	}
+    @Required
+    public void setDefaultUserName(String defaultUserName) {
+        this.defaultUserName = defaultUserName;
+    }
 }
